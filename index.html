@@ -205,6 +205,451 @@ white-space: pre;
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Graphviz-dot-language-spec" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/07/Graphviz-dot-language-spec/">Graphviz dot language spec</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/07/Graphviz-dot-language-spec/" class="archive-article-date">
+  	<time datetime="2019-09-07T10:23:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="DOT语言"><a href="#DOT语言" class="headerlink" title="DOT语言"></a>DOT语言</h1><p>以下是定义DOT语言的抽象语法。终端以粗体显示，非终端以斜体显示。文字字符以单引号给出。括号（和）表示需要时的分组。方括号[和]包含可选项。竖条| 单独的选择。</p>
+<p><em>graph</em>    :    [ <strong>strict</strong> ] ( <strong>graph</strong> | <strong>digraph</strong> ) [ <em>ID</em> ] ‘{‘ stmt_list ‘}’<br>_ stmt_list _    :    [ stmt [ ‘;’ ] stmt_list ]<br><em>stmt</em>    :    node_stmt<br>|    edge_stmt<br>|    attr_stmt<br>|    <em>ID</em> ‘=’ <em>ID</em><br>|    subgraph<br><em>attr_stmt</em>    :    (<strong>graph</strong> | <strong>node</strong> | <strong>edge</strong>) attr_list<br><em>attr_list</em>    :    ‘[‘ [ a_list ] ‘]’ [ attr_list ]<br><em>a</em>list_    :    <em>ID</em> ‘=’ <em>ID</em> [ (‘;’ | ‘,’) ] [ a_list ]<br><em>edge_stmt</em>    :    (node_id | subgraph) <em>edgeRHS</em> [ attr_list ]<br><em>edgeRHS</em>    :    edgeop (node_id | subgraph) [ <em>edgeRHS</em> ]<br><em>node_stmt</em>    :    node_id [ attr_list ]<br><em>node_id</em>    :    <em>ID</em> [ port ]<br><em>port</em>    :    ‘:’ <em>ID</em> [ ‘:’ compass_pt ]<br>|    ‘:’ compass_pt<br><em>subgraph</em>    :    [ <strong>subgraph</strong> [ <em>ID</em> ] ] ‘{‘ stmt_list ‘}’<br><em>compass_pt</em>    :    (<strong>n</strong> | <strong>ne</strong> | <strong>e</strong> | <strong>se</strong> | <strong>s</strong> | <strong>sw</strong> | <strong>w</strong> | <strong>nw</strong> | <strong>c</strong> | <strong>_</strong> )</p>
+<p>关键字node，edge，graph，digraph， subgraph和strict与大小写无关。另请注意，允许的罗盘点值不是关键字，因此这些字符串可以在别处用作普通标识符，相反，解析器实际上将接受任何标识符。</p>
+<p><em>ID</em> 是下列之一：</p>
+<ul>
+<li>任何字母（[a-zA-Z\200-\377]）字符串，下划线（’_‘）或数字（[0-9]），不以数字开头;</li>
+<li>数字 [-]?(.[0-9]+|[0-9]+(.[0-9]*)?);</li>
+<li>任何双引号字符串 (“…”) 可能包含转义引号 (&quot;);</li>
+<li>一个HTML字符串（&lt;…&gt;）。</li>
+</ul>
+<p>ID只是一个字符串; 前两种形式中缺少引号字符只是为了简单起见。<code>abc_2</code> 和<code>&quot;abc_2&quot;</code>之间或<code>2.34</code>和 <code>&quot;2.34&quot;</code>之间没有语义差异 。显然，要使用关键字作为 ID，必须引用它。请注意，在 HTML 字符串中，尖括号必须以匹配对的形式出现，并且允许使用换行符和其他格式的空白字符。此外，内容必须是合法的 XML，因此为了将这些字符嵌入属性值或原始文本中，可能需要 “，&amp;，&lt;和&gt;的特殊 XML 转义序列。作为 ID，HTML 字符串可以是任何合法的 XML 字符串。但是，如果用作标签属性，类似 HTML 的标签。<br>引用的字符串和 HTML 字符串都作为一个单元进行扫描，因此任何嵌入的注释都将被视为字符串的一部分。</p>
+<p>一个 <em>edgeop</em> 在有向图中是 -&gt; 和在无向图中是 – 。</p>
+<p>该语言支持 C++ 风格的注释：/*  */ 和//。 另外，以“#”字符开头的行被认为是来自C预处理器的行输出（例如，#34 以指示行34）并被丢弃。</p>
+<p>分号和逗号有助于提高可读性，但不是必需的。此外，可以在结束符之间插入任何数量的空白。</p>
+<p>作为可读性的另一个辅助点，dot 允许双引号字符串跨越多个物理行, 使用紧接在换行符之前的反斜杠的标准C约定来实现。此外，可以使用“+”运算符连接双引号字符串。由于 HTML 字符串可以包含仅用于格式化的换行符，因此该语言不允许在其中使用转义换行符或连接运算符。</p>
+<h2 id="子图和集群"><a href="#子图和集群" class="headerlink" title="子图和集群"></a>子图和集群</h2><p>子图在Graphviz中扮演三个角色。首先，子图可用于表示图结构，表明某些节点和边应该组合在一起。这是子图的通常作用，通常指定有关图组件的语义信息。它还可以为边缘提供方便的简写。边缘语句允许边缘运算符的左侧和右侧都有子图。发生这种情况时，会从左侧的每个节点到右侧的每个节点创建一条边。例如，规范<br>    A  -&gt; {B C}<br>相当于<br>    A  -&gt; B<br>    A  -&gt; C</p>
+<p>在第二个角色中，子图可以提供设置属性的上下文。例如，子图可以指定 blue 是其中定义的所有节点的默认颜色。在图形绘制的上下文中，一个更有趣的例子是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">subgraph &#123; </span><br><span class="line">rank = same; A; B; C; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此（匿名）子图指定如果使用点绘制，节点A，B和C应全部放在相同的等级上。</p>
+<p>子图的第三个角色直接涉及图形将如何由某些布局引擎布局。如果子图的名称以簇 cluster 开头，则 Graphviz 将子图注释为特殊的簇子图。如果支持，布局引擎将执行布局，以便将属于集群的节点绘制在一起，并将集群的整个绘图包含在边界矩形内。请注意，无论好坏，集群子图都不是 DOT 语言的一部分，而只是某些布局引擎所遵循的语法约定。</p>
+<h2 id="词汇和语义笔记"><a href="#词汇和语义笔记" class="headerlink" title="词汇和语义笔记"></a>词汇和语义笔记</h2><p>必须将图形指定为有向图或图形。在语义上，这表示是否存在从边缘节点之一到另一个节点的自然方向。从词法上讲，有向图必须使用边运算符指定边 -&gt; 而无向图必须使用 – 。在操作上，该区别用于定义不同的默认呈现属性。例如，默认情况下，将使用指向头节点的箭头绘制有向图中的边。对于普通图形，默认情况下绘制的边没有任何箭头。</p>
+<p>图表也可以描述为严格的 <strong>strict</strong> 。这禁止创建多边缘，即，在定向情况下，最多只有一个边具有给定的尾节点和头节点。对于无向图，最多可以有一个边连接到相同的两个节点。使用相同的两个节点的后续边缘语句将使用先前定义的边缘语句识别边缘, 并应用边缘语句中给出的任何属性。例如，图表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">strict graph &#123; </span><br><span class="line">  a -- b</span><br><span class="line">  a -- b</span><br><span class="line">  b -- a [color=blue]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将有一个连接节点 a 和 b 的边，其颜色为蓝色。<br>如果使用节点， 边或图形语句或未附加到节点或边的属性赋值定义默认属性，则之后定义的任何相应类型的对象将继承此属性值。这将保持不变，直到将默认属性设置为新值，从该点开始使用新值。在设置默认属性之前定义的对象在创建默认属性定义后将具有附加到属性的空字符串值。</p>
+<p>特别要注意，子图在定义时接收其父图的属性设置。这可能很有用; 例如，可以将字体分配给根图，所有子图也将使用该字体。但是，对于某些属性，此属性是不合需要的。如果将标签附加到根图上，则所有子图使用标签可能不是所希望的效果。不是在图形顶部列出图形属性，而是在子图形中根据需要重置属性，可以简单地推迟图形中的属性定义，直到定义了适当的子图形。</p>
+<p>如果边缘属于群集，则其端点属于该群集。因此，放置边的位置可以影响布局，因为簇有时会递归布局。</p>
+<p>子图和集群有一些限制。首先，目前，图形及其子图的名称共享相同的名称空间。因此，每个子图必须具有唯一的名称。其次，虽然节点可以属于任意数量的子图，但是当被视为节点和边的子集时，假设簇形成严格的层次结构。</p>
+<h2 id="字符编码"><a href="#字符编码" class="headerlink" title="字符编码"></a>字符编码</h2><p>DOT 语言至少假设 ascii 字符集。带引号的字符串，无论是普通字符串还是类 HTML 字符串，都可能包含非 ascii 字符。在大多数情况下，这些字符串是未被解释的：它们只是作为唯一标识符或通过未触及传递的值。但是，要显示标签，这要求软件能够计算文本的大小并确定适当的字形。为此，它需要知道使用什么字符编码。<br>默认情况下，DOT 采用 UTF-8 字符编码。它还接受 Latin1（ISO-8859-1）字符集，假设输入图使用 <a href="https://graphviz.gitlab.io/_pages/doc/info/attrs.html#a:charset" target="_blank" rel="noopener">charset</a> 属性来指定它。对于使用其他字符集的图形，通常有程序，例如 iconv，它将从一个字符集转换为另一个字符集。</p>
+<p>避免标签中非 ascii 字符的另一种方法是将 HTML 实体用于特殊字符。在标签评估期间，这些实体被转换为基础角色。此 <a href="https://graphviz.gitlab.io/_pages/doc/char.html" target="_blank" rel="noopener">表</a> 显示受支持的实体及其 Unicode 值，典型字形和 HTML 实体名称。因此，要将小写的希腊语 beta 包含在字符串中，可以使用 ascii 序列和 <code>&amp;beta;</code>; 。通常，应该只使用输出字符集中允许的实体，并且字体中有一个字形。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">graphviz dot</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/07/Graphviz-dot-language-spec/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Hadoop-Big-Data-Solutions" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/07/Hadoop-Big-Data-Solutions/">Hadoop - Big Data Solutions</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/07/Hadoop-Big-Data-Solutions/" class="archive-article-date">
+  	<time datetime="2019-09-07T03:12:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Hadoop-大数据解决方案"><a href="#Hadoop-大数据解决方案" class="headerlink" title="Hadoop - 大数据解决方案"></a>Hadoop - 大数据解决方案</h1><h1 id="传统方法"><a href="#传统方法" class="headerlink" title="传统方法"></a>传统方法</h1><p>在这种方法中，企业将拥有一台计算机来存储和处理大数据。出于存储目的，程序员将借助他们选择的数据库供应商（如Oracle，IBM等）。在这种方法中，用户与应用程序交互，而应用程序又处理数据存储和分析的部分。</p>
+<h1 id="大数据传统方法"><a href="#大数据传统方法" class="headerlink" title="大数据传统方法"></a>大数据传统方法</h1><p>局限性<br>这种方法适用于那些处理标准数据库服务器可以容纳的大量数据的应用程序，或者处理数据的处理器的限制。但是，当涉及处理大量可扩展数据时，通过单个数据库瓶颈处理此类数据是一项繁忙的任务。</p>
+<p>谷歌的解决方案<br>Google使用名为MapReduce的算法解决了这个问题。该算法将任务分成小部分并将它们分配给许多计算机，并从中收集结果，这些结果在集成时形成结果数据集。</p>
+<p>谷歌MapReduce<br>Hadoop的<br>使用谷歌提供的解决方案，Doug Cutting和他的团队开发了一个名为HADOOP的开源项目。</p>
+<p>Hadoop使用MapReduce算法运行应用程序，其中数据与其他算法并行处理。简而言之，Hadoop用于开发可以对大量数据执行完整统计分析的应用程序。</p>
+<p>Hadoop框架</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">hadoop</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/07/Hadoop-Big-Data-Solutions/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Hadoop-大数据概述" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/06/Hadoop-大数据概述/">Hadoop - 大数据概述</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/06/Hadoop-大数据概述/" class="archive-article-date">
+  	<time datetime="2019-09-06T14:51:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>“世界上90％的数据是在过去几年中产生的。”<br>由于社交网站等新技术，设备和通信方式的出现，人类每年产生的数据量正在迅速增长。之前全部到2003年为止，我们生成的数据量为5050亿GB。如果你以磁盘的形式堆积数据，它可能会填满整个足球场。2011年每两天创造相同的数量，2013年每十分钟创建这么多。这个比率仍在大幅增长。虽然所有这些信息都是有意义的，并且在处理时很有用，但它却被忽略了。</p>
+<h1 id="什么是大数据？"><a href="#什么是大数据？" class="headerlink" title="什么是大数据？"></a>什么是大数据？</h1><p>大数据是无法使用传统计算技术处理的大型数据集的集合。它不是单一的技术或工具，而是已成为一个完整的主题，涉及各种工具，技术和框架。</p>
+<h1 id="什么来自大数据？"><a href="#什么来自大数据？" class="headerlink" title="什么来自大数据？"></a>什么来自大数据？</h1><p>大数据涉及不同设备和应用程序生成的数据。以下是大数据旗下的一些领域。</p>
+<ul>
+<li><p>黑匣子数据 - 它是直升机，飞机和喷气式飞机等的一个组成部分。它捕获机组人员的声音，麦克风和耳机的录音以及飞机的性能信息。</p>
+</li>
+<li><p>社交媒体数据 - Facebook和Twitter等社交媒体可以保存全球数百万人发布的信息和观点。</p>
+</li>
+<li><p>证券交易所数据 - 证券交易所数据包含有关客户制作的不同公司股票的“买入”和“卖出”决策的信息。</p>
+</li>
+<li><p>电网数据 - 电网数据保存特定节点相对于基站消耗的信息。</p>
+</li>
+<li><p>运输数据 - 运输数据包括车辆的型号，容量，距离和可用性。</p>
+</li>
+<li><p>搜索引擎数据 - 搜索引擎从不同的数据库中检索大量数据。</p>
+</li>
+</ul>
+<h2 id="大数据"><a href="#大数据" class="headerlink" title="大数据"></a>大数据</h2><p>因此，大数据包括大量，高速和可扩展的各种数据。其中的数据有三种类型。</p>
+<ul>
+<li><p>结构化数据 - 关系数据。</p>
+</li>
+<li><p>半结构化数据 - XML数据。</p>
+</li>
+<li><p>非结构化数据 - Word，PDF，文本，媒体日志。</p>
+</li>
+</ul>
+<h2 id="大数据的好处"><a href="#大数据的好处" class="headerlink" title="大数据的好处"></a>大数据的好处</h2><ul>
+<li><p>使用Facebook等社交网络中保存的信息，营销机构从中了解其广告，促销活动和其他媒体的响应情况。</p>
+</li>
+<li><p>使用社交媒体中的信息，例如消费者的偏好和产品感知，产品公司和零售组织正在计划他们的生产。</p>
+</li>
+<li><p>使用有关患者既往病史的数据，医院正在提供更好，更快捷的服务。</p>
+</li>
+</ul>
+<h2 id="大数据技术"><a href="#大数据技术" class="headerlink" title="大数据技术"></a>大数据技术</h2><p>大数据技术对于提供更准确的分析非常重要，这可能会导致更具体的决策，从而提高运营效率，降低成本并降低业务风险。</p>
+<p>要利用大数据的强大功能，您需要一个能够实时管理和处理大量结构化和非结构化数据的基础架构，并可以保护数据隐私和安全。</p>
+<p>市场上有来自不同供应商的各种技术，包括亚马逊，IBM，微软等，以处理大数据。在研究处理大数据的技术时，我们研究了以下两类技术 -</p>
+<ul>
+<li>运营大数据<br>这包括像MongoDB这样的系统，它们为主要捕获和存储数据的实时交互式工作负载提供操作功能。</li>
+</ul>
+<p>NoSQL大数据系统旨在利用过去十年中出现的新的云计算架构，以便以低成本和高效率运行大规模计算。这使得运营大数据工作负载更易于管理，更便宜，实施更快。</p>
+<p>一些NoSQL系统可以基于实时数据提供对模式和趋势的洞察，只需最少的编码，无需数据科学家和其他基础设施。</p>
+<ul>
+<li>分析大数据<br>这些系统包括大规模并行处理（MPP）数据库系统和MapReduce等系统，这些系统为可能接触大部分或全部数据，为回顾性和复杂分析提供分析能力。</li>
+</ul>
+<p>MapReduce提供了一种分析数据的新方法，该方法与SQL提供的功能互补，并且基于MapReduce的系统可以从单个服务器扩展到数千台高端和低端机器。</p>
+<p>这两类技术是互补的，并且经常一起部署。</p>
+<h2 id="运营与分析系统"><a href="#运营与分析系统" class="headerlink" title="运营与分析系统"></a>运营与分析系统</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">        	操作		分析</span><br><span class="line">潜伏		1毫秒 - 100毫秒	1分钟 - 100分钟</span><br><span class="line">并发		1000 - 100,000	1 - 10</span><br><span class="line">访问模式	写作和阅读	读</span><br><span class="line">查询		可选择的	非选择性</span><br><span class="line">数据范围	操作		回顾</span><br><span class="line">最终用户	顾客		数据科学家</span><br><span class="line">技术		NoSQL		MapReduce，MPP数据库</span><br></pre></td></tr></table></figure>
+
+<h2 id="大数据挑战"><a href="#大数据挑战" class="headerlink" title="大数据挑战"></a>大数据挑战</h2><p>与大数据相关的主要挑战如下 -</p>
+<ul>
+<li>捕获数据</li>
+<li>策展(训化？）</li>
+<li>存储</li>
+<li>搜索</li>
+<li>分享</li>
+<li>传输</li>
+<li>分析</li>
+<li>展示 </li>
+</ul>
+<p>为了应对上述挑战，各类组织通常会借助企业服务器。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">hadoop</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/06/Hadoop-大数据概述/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-help" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/06/help/">help</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/06/help/" class="archive-article-date">
+  	<time datetime="2019-09-06T14:06:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/06/help/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="category-Hadoop-入门" class="article article-type-category  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/06/Hadoop-入门/">Hadoop 入门</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/06/Hadoop-入门/" class="archive-article-date">
+  	<time datetime="2019-09-06T14:05:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Hadoop教程"><a href="#Hadoop教程" class="headerlink" title="Hadoop教程"></a>Hadoop教程</h1><p>Hadoop是一个开源框架，允许使用简单的编程模型在分布式环境中跨计算机集群存储和处理大数据。它旨在从单个服务器扩展到数千台计算机，每台计算机都提供本地计算和存储。</p>
+<p>本教程简要介绍了大数据，MapReduce算法和Hadoop分布式文件系统。</p>
+<h2 id="听众"><a href="#听众" class="headerlink" title="听众"></a>听众</h2><p>本教程是为有志于使用Hadoop Framework学习大数据分析基础知识并成为Hadoop开发人员的专业人士准备的。软件专业人员，分析专业人员和ETL开发人员是本课程的主要受益者。</p>
+<h2 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h2><p>在开始学习本教程之前，我们假设您事先已经了解过Core Java，数据库概念以及任何Linux操作系统风格。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/06/Hadoop-入门/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-plantuml-test" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -892,7 +1337,7 @@ Apache 2.0的配置和1.3类似，更多信息可以参考2.0的mod_expires和mo
 <p>关于非连续性访问统计<br>Jeff Goldberg内容丰富的演说告诉你为什么不应该过度依赖访问统计和计数器；</p>
 <p>可缓存性检测引擎<br>可缓存的引擎设计，检测网页并确定其如何与Web缓存服务器交互， 这个引擎配合这篇指南是一个很好的调试工具，</p>
 <p><code>cgi_buffer</code>库<br>包含库：用于CGI模式运行的Perl/Python/PHP脚本，自动处理ETag生成/校验，Content-Length生成和内容压缩。正确地。 Python版本也被用作其他大量的CGI脚本。</p>
-<h1 id="关于本文档"><a href="#关于本文档" class="headerlink" title="关于本文档"></a>关于本文档</h1><p>本文版权属于Mark Nottingham <a href="mailto:&#109;&#110;&#x6f;&#116;&#64;&#112;&#111;&#98;&#111;&#x78;&#x2e;&#x63;&#x6f;&#109;" target="_blank" rel="noopener">&#109;&#110;&#x6f;&#116;&#64;&#112;&#111;&#98;&#111;&#x78;&#x2e;&#x63;&#x6f;&#109;</a>，本作品遵循创作共用版权。<br>如果你镜像本文，请通过以上邮件告知，这样你可以在更新时被通知；<br>所有的商标属于其所有人。<br>虽然作者确信内容在发布时的正确性，但不保证其应用或引申应用的正确性，如有误传，错误或其他需要澄清的问题请尽快告知作者；<br>本文最新版本可以从 <a href="http://www.mnot.net/cache_docs/" target="_blank" rel="noopener">http://www.mnot.net/cache_docs/</a> 获得；<br>翻译版本包括： 捷克语版，法语版和中文版。<br>版本： 1.81 - 2007年3月16日</p>
+<h1 id="关于本文档"><a href="#关于本文档" class="headerlink" title="关于本文档"></a>关于本文档</h1><p>本文版权属于Mark Nottingham <a href="mailto:&#x6d;&#x6e;&#x6f;&#x74;&#64;&#x70;&#111;&#98;&#x6f;&#120;&#x2e;&#99;&#x6f;&#109;" target="_blank" rel="noopener">&#x6d;&#x6e;&#x6f;&#x74;&#64;&#x70;&#111;&#98;&#x6f;&#120;&#x2e;&#99;&#x6f;&#109;</a>，本作品遵循创作共用版权。<br>如果你镜像本文，请通过以上邮件告知，这样你可以在更新时被通知；<br>所有的商标属于其所有人。<br>虽然作者确信内容在发布时的正确性，但不保证其应用或引申应用的正确性，如有误传，错误或其他需要澄清的问题请尽快告知作者；<br>本文最新版本可以从 <a href="http://www.mnot.net/cache_docs/" target="_blank" rel="noopener">http://www.mnot.net/cache_docs/</a> 获得；<br>翻译版本包括： 捷克语版，法语版和中文版。<br>版本： 1.81 - 2007年3月16日</p>
 
       
 
@@ -917,479 +1362,6 @@ Apache 2.0的配置和1.3类似，更多信息可以参考2.0的mod_expires和mo
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/08/23/http-cache-control/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-learn-yaml-in-10-minites" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/21/learn-yaml-in-10-minites/">learn yaml in 10 minites</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/21/learn-yaml-in-10-minites/" class="archive-article-date">
-  	<time datetime="2019-08-21T10:52:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="10分钟之内学会yaml"><a href="#10分钟之内学会yaml" class="headerlink" title="10分钟之内学会yaml"></a>10分钟之内学会yaml</h1><p>YAML是一种数据序列化语言，旨在直接可由人类编写和读取。</p>
-<p>它是JSON的严格超集，重要的是语法上添加了换行符和缩进，类似 Python。但是，与Python不同的是，YAML不允许使用<strong>制表符</strong>进行缩进。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span><span class="bullet">--</span>   <span class="comment"># 文档开始</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#YAML中的注释看起来像这样的。</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="标量类型"><a href="#标量类型" class="headerlink" title="标量类型"></a>标量类型</h1><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 我们的根对象（对整个文档而言）将是一个映射，</span></span><br><span class="line"><span class="comment"># 等同于其他语言的字典，散列或对象。</span></span><br><span class="line"><span class="string">key</span> <span class="string">:</span>  <span class="string">value</span> </span><br><span class="line"><span class="string">another_key</span> <span class="string">:</span>  <span class="string">另一个值</span> <span class="string">_在</span> <span class="string">_这里</span></span><br><span class="line"><span class="string">a_number_value</span> <span class="string">:</span>  <span class="number">100</span> </span><br><span class="line"><span class="string">scientific_notation</span> <span class="string">:</span>  <span class="number">1e+12</span> </span><br><span class="line"><span class="comment">#数字1将被解释为数字，而不是布尔值。如果你想</span></span><br><span class="line"><span class="comment">#将它解释为布尔值，请使用true </span></span><br><span class="line"><span class="string">boolean</span> <span class="string">:</span>  <span class="literal">true</span> </span><br><span class="line"><span class="string">null_value</span> <span class="string">:</span>  <span class="literal">null</span> </span><br><span class="line"><span class="string">key</span> <span class="string">with</span> <span class="string">spaces</span> <span class="string">:</span>  <span class="string">value</span> </span><br><span class="line"><span class="comment">#注意字符串不需要引号。但也可以有。</span></span><br><span class="line"><span class="attr">however:</span> <span class="string">'围在引号内的字符串。'</span></span><br><span class="line"><span class="string">'key with spaces'</span> <span class="string">:</span> <span class="string">"带引号的键，如果你想以把一个‘:’ 放键里也是可以的"</span> </span><br><span class="line"><span class="string">single</span> <span class="attr">quotes:</span> <span class="string">'有'</span><span class="string">' 一个'</span><span class="string">' 转义模式'</span> </span><br><span class="line"><span class="string">double</span> <span class="attr">quotes:</span> <span class="string">"有很多:\"，\0，\t，\u263A ，\x0d \x0a == \ r\n，等等"</span>  </span><br><span class="line"><span class="comment">#UTF- 8/16/32个字符需要编码</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#上标2</span></span><br><span class="line"><span class="string">Superscript</span> <span class="attr">two:</span>   <span class="string">\u00B2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#多行字符串可以写成'文字块'（使用|），</span></span><br><span class="line"><span class="comment">#或'折叠块'（使用'&gt;'）。</span></span><br><span class="line"><span class="string">literal_block</span> <span class="string">:</span> <span class="string">| </span></span><br><span class="line"><span class="string">    整个文本块将是'literal_block'键的值，</span></span><br><span class="line"><span class="string">    并保留换行符。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    文字一直持续到反向缩进，并且</span></span><br><span class="line"><span class="string">    删除了前面的缩进。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        任何有“更多缩进”的</span></span><br><span class="line"><span class="string">        行都会保留其余的缩进 - 这些行将缩进4个空</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">folded_style : &gt; </span></span><br><span class="line"><span class="string">    整个文本块将是'folded_style'的值，但这</span></span><br><span class="line"><span class="string">    一次，所有换行都将被替换为单个空格。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    与上面一样，空行将转换为换行符。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        “更多缩进”的行也保留了他们的换行符 - </span></span><br><span class="line"><span class="string">        此文本将显示为两行。</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="集合类型"><a href="#集合类型" class="headerlink" title="集合类型"></a>集合类型</h1><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 嵌套使用缩进。优选2个空格缩进（但不是必需的）。</span></span><br><span class="line"><span class="string">a_nested_map</span> <span class="string">:</span></span><br><span class="line">  <span class="string">key</span> <span class="string">:</span>  <span class="string">value</span> </span><br><span class="line">  <span class="string">another_key</span> <span class="string">:</span> <span class="string">Another</span> <span class="string">Value</span> </span><br><span class="line">  <span class="string">another_nested_map</span> <span class="string">:</span></span><br><span class="line">    <span class="string">hello</span> <span class="string">:</span> <span class="string">hello</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#map不一定有字符串键。</span></span><br><span class="line"><span class="number">0.25</span> <span class="string">:</span>  <span class="string">浮点数键</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Key也可能很复杂，比如多行对象</span></span><br><span class="line"><span class="comment">#我们用?后跟一个空格，表示复杂键的开始。</span></span><br><span class="line"><span class="string">?</span> <span class="string">| </span></span><br><span class="line"><span class="string">  这是一个</span></span><br><span class="line"><span class="string">  有多行的键</span></span><br><span class="line"><span class="string">:  这是它的值</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#YAML还允许使用复杂的键语法在序列之间进行映射</span></span><br><span class="line"><span class="string">#某些语言解析器可能会抱怨</span></span><br><span class="line"><span class="string">#一个例子</span></span><br><span class="line"><span class="string">? -  曼联</span></span><br><span class="line"><span class="string">  -  皇家马德里</span></span><br><span class="line"><span class="string">: [ 2001-01-01 ,  2002-02-02]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># Sequence（相当于列表 list 或数组 array）看起来像这样</span></span><br><span class="line"><span class="string">#（注意' - '算作缩进）:</span></span><br><span class="line"><span class="string">a_sequence :</span></span><br><span class="line"><span class="string">  -  Item 1 </span></span><br><span class="line"><span class="string">  -  Item 2 </span></span><br><span class="line"><span class="string">  -  0.5   #sequence可以包含不同的类型。</span></span><br><span class="line"><span class="string">  -  第4项</span></span><br><span class="line"><span class="string">  -  键: 值</span></span><br><span class="line"><span class="string">    another_key : another_value </span></span><br><span class="line"><span class="string">  - </span></span><br><span class="line"><span class="string">    -  这是一个序列</span></span><br><span class="line"><span class="string">    -  在另一个序列中</span></span><br><span class="line"><span class="string">  -  -  -  嵌套序列指示符</span></span><br><span class="line"><span class="string">         -  可以折叠</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#由于YAML是JSON的超集，则也可以编写JSON式map和</span></span><br><span class="line"><span class="string">#序列:</span></span><br><span class="line"><span class="string">json_map : &#123; "钥匙" : "值" &#125; </span></span><br><span class="line"><span class="string">json_seq : [ 3 , 2, 1 , "起飞" ] </span></span><br><span class="line"><span class="string">and quotes are optional: &#123; 键: [ 3 , 2 , 1 , 起飞]&#125;  #且引号是可选的</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">```yaml </span></span><br><span class="line"><span class="string">#          YAML 附加特性              #</span></span><br><span class="line"><span class="string">```yaml</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#YAML还有一个名为“anchors”的便捷功能，可让您轻松复制文档中的</span></span><br><span class="line"><span class="string"># 内容。这两个按键也会有同样的值:</span></span><br><span class="line"><span class="string">anchored_content : &amp;anchor_name  此字符串将显示为两个键的值。</span></span><br><span class="line"><span class="string">other_anchor :  *anchor_name</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># Anchors 可用于复制/继承属性</span></span><br><span class="line"><span class="string">base :  &amp;base </span></span><br><span class="line"><span class="string">  name :  大家都有相同的名字</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># regexp &lt;&lt; 被称为语言无关的合并键类型 。它用于</span></span><br><span class="line"><span class="string">#表示应将一个或多个指定映射的所有键插入到当前映射中。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">foo : &amp;foo </span></span><br><span class="line"><span class="string">  &lt;&lt; : *base</span></span><br><span class="line"><span class="string"></span><span class="attr">  age:</span> <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="string">bar</span> <span class="string">:</span> <span class="meta">&amp;bar</span> </span><br><span class="line">  <span class="string">&lt;&lt;</span> <span class="string">:</span> <span class="meta">*base</span></span><br><span class="line"><span class="attr">  age:</span> <span class="number">20</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#foo和bar也有name: ‘大家都有相同的名字’</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#YAML还有标记，您可以使用它来显式声明类型。</span></span><br><span class="line"><span class="string">explicit_string</span> <span class="string">:</span> <span class="type">!!str</span>  <span class="number">0.5</span> </span><br><span class="line"><span class="comment">#一些解析器实现了特定于语言的标签，就像Python的</span></span><br><span class="line"><span class="comment"># 复数 complex 数字类型一样。</span></span><br><span class="line"><span class="string">python_complex_number</span> <span class="string">:</span> <span class="type">!!python</span><span class="string">/complex</span>  <span class="number">1</span> <span class="string">+</span> <span class="number">2</span><span class="string">j</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#我们还可以使用带语言特定标签的yaml复合键</span></span><br><span class="line"><span class="string">?</span> <span class="type">!!python</span><span class="string">/tuple</span> <span class="string">[5,</span> <span class="number">7</span><span class="string">]</span></span><br><span class="line"><span class="string">:</span> <span class="string">Fifty</span> <span class="string">Seven</span></span><br><span class="line"><span class="comment">#在Python将是 &#123;(5, 7): 'Fifty Seven'&#125;</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="更多-YAML-类型"><a href="#更多-YAML-类型" class="headerlink" title="更多 YAML 类型"></a>更多 YAML 类型</h1><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#字符串和数字不是YAML可以理解的唯一标量。</span></span><br><span class="line"><span class="comment">#ISO格式的日期和日期时间也被解析。</span></span><br><span class="line"><span class="string">datetime</span> <span class="string">:</span> <span class="number">2001</span><span class="bullet">-12</span><span class="bullet">-15</span><span class="attr">T02:59:43.1Z</span> </span><br><span class="line"><span class="string">datetime_with_spaces</span> <span class="string">:</span> <span class="number">2001</span><span class="bullet">-12</span><span class="bullet">-14</span> <span class="number">21</span><span class="string">:59:43.10</span> <span class="bullet">-5</span> </span><br><span class="line"><span class="string">date</span> <span class="string">:</span> <span class="number">2002</span><span class="bullet">-12</span><span class="bullet">-14</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#!!binary 标签表示字符串实际上是二进制的base64编码的大字段 blob</span></span><br><span class="line"><span class="comment"># 浏览器地址栏粘上以下内容去看看吧：</span></span><br><span class="line"><span class="comment"># data:image/git;base64,R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J+fn5 OTk6enp56enmlpaWNjY6Ojo4SEhP/++f/++f/++f/++f/++f/++f/++f/++f/+ +f/++f/++f/++f/++f/++SH+Dk1hZGUgd2l0aCBHSU1QACwAAAAADAAMAAAFLC AgjoEwnuNAFOhpEMTRiggcz4BNJHrv/zCFcLiwMWYNG84BwwEeECcgggoBADs=</span></span><br><span class="line"><span class="string">gif_file</span> <span class="string">:</span> <span class="type">!!binary</span> <span class="string">|</span></span><br><span class="line"><span class="string">  R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J+fn5</span></span><br><span class="line"><span class="string">  OTk6enp56enmlpaWNjY6Ojo4SEhP/++f/++f/++f/++f/++f/++f/++f/++f/+</span></span><br><span class="line"><span class="string">  +f/++f/++f/++f/++f/++SH+Dk1hZGUgd2l0aCBHSU1QACwAAAAADAAMAAAFLC</span></span><br><span class="line"><span class="string">  AgjoEwnuNAFOhpEMTRiggcz4BNJHrv/zCFcLiwMWYNG84BwwEeECcgggoBADs=</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#YAML也有集合 set 类型，它看起来像这样:</span></span><br><span class="line"><span class="string"></span><span class="attr">set:</span></span><br><span class="line">  <span class="string">?</span> <span class="string">item1</span> </span><br><span class="line">  <span class="string">?</span> <span class="string">item2</span> </span><br><span class="line">  <span class="string">?</span> <span class="string">item3</span> </span><br><span class="line"><span class="attr">or:</span> <span class="string">&#123;</span> <span class="string">item1</span> <span class="string">,</span> <span class="string">item2</span> <span class="string">,</span> <span class="string">item3</span> <span class="string">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#集 set 只是具有空值的映射map; 以上等同于:</span></span><br><span class="line"><span class="string">set2</span> <span class="string">:</span></span><br><span class="line">  <span class="string">item1</span> <span class="string">:</span> <span class="literal">null</span> </span><br><span class="line">  <span class="string">item2</span> <span class="string">:</span> <span class="literal">null</span> </span><br><span class="line">  <span class="string">item3</span> <span class="string">:</span> <span class="literal">null</span></span><br><span class="line"></span><br><span class="line"><span class="string">...</span>   <span class="comment">#全文完</span></span><br></pre></td></tr></table></figure>
-
-<p><a href="downloads/code/learnyaml.yaml">下载源码</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">yaml</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/21/learn-yaml-in-10-minites/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-js-call-vs-apply" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/20/js-call-vs-apply/">函数原型中的 call 和 apply 方法的区别</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/20/js-call-vs-apply/" class="archive-article-date">
-  	<time datetime="2019-08-20T15:06:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="call-apply都属于Function-prototype的方法"><a href="#call-apply都属于Function-prototype的方法" class="headerlink" title="call, apply都属于Function.prototype的方法"></a>call, apply都属于Function.prototype的方法</h1><p>它们是在 JavaScript 引擎内在实现的，因为属于Function.prototype，所以每个Function对象实例，也就是每个方法都有call, apply属性。它们的作用一样，只是使用方式不同。</p>
-<h1 id="call-与-apply-调用参数不同"><a href="#call-与-apply-调用参数不同" class="headerlink" title="call 与 apply 调用参数不同"></a>call 与 apply 调用参数不同</h1><p>不同之处在于调用apply函数时，参数可以使用数组; <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/call" target="_blank" rel="noopener">call</a>要求明确列出参数。</p>
-<blockquote>
-<p><strong>助记法</strong>: <strong>A</strong>pply 的A表示 Array, 即数组, 而 <strong>C</strong>all 的 C 表示 Comma, 即逗号。</p>
-</blockquote>
-<p>更多请参阅<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/apply" target="_blank" rel="noopener">MDN</a>的文档。</p>
-<p>伪语法：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">theFunction.apply(valueForThis, arrayOfArgs)</span><br><span class="line">theFunction.call(valueForThis, arg1, arg2, ...)</span><br></pre></td></tr></table></figure>
-
-<p>从ES6开始，还有<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Spread_operator" target="_blank" rel="noopener">展开spread</a>数组与该call功能一起使用的可能性，你可以在<a href="http://kangax.github.io/compat-table/es6/" target="_blank" rel="noopener">这里</a>看到兼容性。</p>
-<p>示例代码：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">theFunction</span>(<span class="params">name, profession</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"My name is "</span> + name + <span class="string">" and I am a "</span> + profession +<span class="string">"."</span>);</span><br><span class="line">&#125;</span><br><span class="line">theFunction(<span class="string">"John"</span>, <span class="string">"fireman"</span>);</span><br><span class="line">theFunction.apply(<span class="literal">undefined</span>, [<span class="string">"Susan"</span>, <span class="string">"school teacher"</span>]);</span><br><span class="line">theFunction.call(<span class="literal">undefined</span>, <span class="string">"Claude"</span>, <span class="string">"mathematician"</span>);</span><br><span class="line">theFunction.call(<span class="literal">undefined</span>, ...[<span class="string">"Matthew"</span>, <span class="string">"physicist"</span>]); <span class="comment">// 使用展开语法</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="搞这么复杂，直接调用函数不好吗？"><a href="#搞这么复杂，直接调用函数不好吗？" class="headerlink" title="搞这么复杂，直接调用函数不好吗？"></a>搞这么复杂，直接调用函数不好吗？</h1><p>主要是为了模拟面向对象，对状态进行封装的同时， 不同实例可以有不同的内部状态，如：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="built_in">module</span> = &#123;</span><br><span class="line">  x: <span class="number">42</span>,</span><br><span class="line">  getX: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.x;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> unboundGetX = <span class="built_in">module</span>.getX;</span><br><span class="line"><span class="built_in">console</span>.log(unboundGetX()); <span class="comment">// 函数在全局范围内调用，this=window</span></span><br><span class="line"><span class="comment">// 会输出: undefined， 因为window下没有定义x</span></span><br><span class="line">unboundGetX.call(<span class="built_in">module</span>) <span class="comment">//输出 42, 或使用 bind 也有同样的效果</span></span><br><span class="line"><span class="keyword">var</span> module1 =&#123;</span><br><span class="line">   x:<span class="number">123</span>,</span><br><span class="line">   getX: unboundGetX  <span class="comment">//this 变为module1</span></span><br><span class="line">&#125;</span><br><span class="line">module1.getX() <span class="comment">//返回123</span></span><br></pre></td></tr></table></figure>
-
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">javascript</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/20/js-call-vs-apply/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Java-8-Stream-for-Parallel-Async" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/13/Java-8-Stream-for-Parallel-Async/">Java 8 Stream for Parallel &amp; Async</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/13/Java-8-Stream-for-Parallel-Async/" class="archive-article-date">
-  	<time datetime="2019-08-13T15:48:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Java 8中的并行和异步编程<br>2018年4月17日</p>
-<p>Lisa Steendam<br>软件工程师</p>
-<p>并行编程不再需要成为寻找更快代码的难以逾越的障碍。<br>并行代码是在多个线程上运行的代码，曾经是许多经验丰富的开发人员的噩梦，但是Java 8带来了许多变化，这些变化应该会使这种提升性能的技巧更易于管理。</p>
-<h2 id="并行流"><a href="#并行流" class="headerlink" title="并行流"></a>并行流</h2><p>在Java 8之前，并行（或并发）代码和顺序代码之间存在很大差异。调试非顺序代码也非常困难。简单地设置断点并像通常那样通过流程，将删除并行方面，如果这是导致错误的原因，这是一个问题。</p>
-<p>幸运的是，Java 8为我们提供了流，这是自Java开发以来Java开发人员最棒的事情。如果您不知道它们是什么，Stream API可以处理功能问题中的元素序列。（在这里检查我们在流和.NET的LINQ之间的比较。）流的一个优点是代码的结构保持不变：无论是顺序的还是并发的，它都保持可读性。</p>
-<p>要使代码并行运行，只需使用.parallelStream()而不是.stream()（或者stream.parallel()，如果您不是流的创建者）。</p>
-<p>但仅仅因为它很容易，并不意味着并行代码始终是最佳选择。您应该始终考虑对您的代码使用并发性是否有任何意义。决定中最重要的因素是速度：如果它使代码比顺序代码更快，则只使用并发。</p>
-<h2 id="速度问题"><a href="#速度问题" class="headerlink" title="速度问题"></a>速度问题</h2><p>并行代码通过使用多个线程而不是顺序代码使用的单个线程获得速度。确定要创建多少线程可能是一个棘手的问题，因为更多的线程并不总是导致更快的代码：如果使用太多线程，代码的性能可能实际上会下降。</p>
-<p>有几条规则可以告诉您选择的线程数。这主要取决于您要执行的操作类型和可用内核数。</p>
-<p>计算密集型操作应使用低于或等于内核数量的多个线程，而复制文件等IO密集型操作对CPU没有用处，因此可以使用更多数量的线程。除非您告诉它该做什么，否则代码不知道哪种情况适用。否则，它将默认为多个线程数等于核心数。</p>
-<p>有两种主要情况可能有助于运行代码并行而不是顺序：耗时的任务和任务在大型集合上运行。Java 8带来了处理这些大型集合的新方法，即使用流。流通过懒惰具有内置效率：它们使用惰性评估，通过不做必要的操作来节省资源。这与并行性不同，并行性只要它变得更快就不关心资源。因此，对于大型集合，您可能不需要经典的并行性。</p>
-<p>================================================== ====================</p>
-<h2 id="去异步"><a href="#去异步" class="headerlink" title="去异步"></a>去异步</h2><p>JavaScript的经验教训<br>很少见，Java开发人员可以说他们从查看JavaScript中学到了一些东西，但是当谈到异步编程时，JavaScript实际上是先做对了。作为一种基本的异步语言，JavaScript在糟糕实现时会有多么痛苦的经验。它始于回调，后来被承诺取代。承诺的一个重要好处是它有两个“通道”：一个用于数据，一个用于错误。JavaScript承诺可能如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func</span><br><span class="line">.then(f1)</span><br><span class="line">.catch(e1)</span><br><span class="line">.then(f2)</span><br><span class="line">.catch(e2);</span><br></pre></td></tr></table></figure>
-
-<p>因此，当原始函数具有成功结果时，将调用f1，但如果抛出错误，则将调用e1。这可能会将其带回成功的轨道（f2），或导致另一个错误（e2）。您可以从数据轨道转到错误轨道并返回。</p>
-<p>JavaScript版本的Java承诺称为CompletableFuture。</p>
-<p>CompletableFuture<br>CompletableFuture实现Future和CompletionStage接口。Future已经存在于Java8之前，但它本身并不是非常开发人员友好的。您只能通过使用该.get()方法获取异步计算的结果，该方法阻止了其余部分（使异步部分在大多数情况下非常无意义）并且您需要手动实现每个可能的方案。添加CompletionStage界面是使Java中的异步编程可行的突破。</p>
-<p>CompletionStage是一种承诺，即最终将完成计算的承诺。它包含一系列方法，可以附加将在完成时执行的回调。现在我们可以不受阻塞地处理结果。</p>
-<p>有两种主要的方法可以让你启动代码的异步部分：supplyAsync如果你想对方法的结果做一些事情，runAsync如果你不想。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CompletableFuture.runAsync(() → System.out.println(&quot;Run async in completable future &quot; + Thread.currentThread()));</span><br><span class="line">CompletableFuture.supplyAsync(() → 5);</span><br></pre></td></tr></table></figure>
-
-<p> 回调</p>
-<p>现在，您可以添加这些回调来处理supplyAsync的结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CompletableFuture.supplyAsync(() → 5)</span><br><span class="line">.thenApply(i → i * 3)</span><br><span class="line">.thenAccept(i → System.out.println(“The result is “ + i)</span><br><span class="line">.thenRun(() → System.out.println(&quot;Finished.&quot;));</span><br></pre></td></tr></table></figure>
-
-<p>.thenApply类似于.map流的功能：它执行转换。在上面的例子中，它取结果（5）并将其乘以3.然后将结果（15）传递到管道下方。</p>
-<p>.thenAccept对结果执行方法而不转换它。它也不会返回结果。在这里它将打印“结果为15”到控制台。它可以与.foreach流的方法进行比较。</p>
-<p>.thenRun不使用异步操作的结果并且也不返回任何内容，它只是等待调用它Runnable直到上一步完成。</p>
-<h2 id="异步你的异步"><a href="#异步你的异步" class="headerlink" title="异步你的异步"></a>异步你的异步</h2><p>以上所有的回调方法也都在异步版本：thenRunAsync，thenApplyAsync等等。这些版本都可以在自己的线程运行，他们给你额外的控制，因为你可以告诉它ForkJoinPool使用。</p>
-<p>如果不使用异步版本，则回调将全部在同一个线程上执行。</p>
-<h2 id="当事情出错时"><a href="#当事情出错时" class="headerlink" title="当事情出错时"></a>当事情出错时</h2><p>当出现问题时，该exceptionally方法用于处理异常。您可以为其提供一个方法，该方法返回一个值以返回数据轨道，或抛出（新）异常。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.exceptionally(ex → new Foo())</span><br><span class="line">.thenAccept(this::bar);</span><br></pre></td></tr></table></figure>
-
-<h2 id="结合和撰写"><a href="#结合和撰写" class="headerlink" title="结合和撰写"></a>结合和撰写</h2><p>您可以CompletableFutures使用该thenCompose方法链接多个。没有它，结果将是嵌套的CompletableFutures。这使得thenCompose和thenApply喜欢flatMap和map流。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CompletableFuture.supplyAsync(() -&gt; &quot;Hello&quot;)</span><br><span class="line">.thenCompose(s -&gt; CompletableFuture</span><br><span class="line">.supplyAsync(() -&gt; s + &quot;World&quot;));</span><br></pre></td></tr></table></figure>
-
-<p>如果要组合两个结果CompletableFutures，则需要一个方便调用的方法thenCombine。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">future.thenCombine(future2, Integer::sum)</span><br><span class="line">.thenAccept(value →  System.out.println(value));</span><br></pre></td></tr></table></figure>
-
-<p>正如您在上面的示例中所看到的，回调的结果thenCombine可以像CompletableFuture所有您喜欢的CompletionStage方法一样处理。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>并行编程不再需要成为寻找更快代码的难以逾越的障碍。Java 8使得该过程尽可能简单，因此任何可能从中受益的代码都可以在所有线程上被拉，踢和尖叫，进入多核未来，实际上就是现在天。我的意思是：它很容易做到，所以试一试，看看它对你自己有什么好处。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/13/Java-8-Stream-for-Parallel-Async/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Energy–maneuverability-theory" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/13/Energy–maneuverability-theory/">Energy–maneuverability theory</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/13/Energy–maneuverability-theory/" class="archive-article-date">
-  	<time datetime="2019-08-13T03:31:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Energy_Maneuverability_diagram.jpg/300px-Energy_Maneuverability_diagram.jpg" alt="em"></p>
-<p>能量可操作性理论是飞机性能的模型。它由战斗机飞行员John Boyd上校和空军数学家Thomas P. Christie [1]开发，可用于描述飞机的动力和潜在能量或飞机比能量的总和。它将飞机的推力，重量，气动阻力，机翼面积和其他飞行特性与定量模型联系起来。这允许预测和比较各种飞机的战斗能力或预期的设计权衡。</p>
-<p>飞机性能的所有这些方面都通过以下公式压缩为单个值：</p>
-<p>PS = V (T − D)/ W<br>V = Speed<br>T = Thrust<br>D = Drag<br>W = Weight</p>
-<p>$$\frac{\partial u}{\partial t}<br>= h^2 \left( \frac{\partial^2 u}{\partial x^2} +<br>\frac{\partial^2 u}{\partial y^2} +<br>\frac{\partial^2 u}{\partial z^2}\right)$$</p>
-<p>Simple inline $a = b + c$.</p>
-<p>$${\displaystyle {\begin{array}{rcl}P_{S}&amp;=&amp;V\left({\frac {T-D}{W}}\right)\\V&amp;=&amp;{\text{Speed}}\T&amp;=&amp;{\text{Thrust}}\D&amp;=&amp;{\text{Drag}}\W&amp;=&amp;{\text{Weight}}\end{array}}} {\displaystyle {\begin{array}{rcl}P_{S}&amp;=&amp;V\left({\frac {T-D}{W}}\right)\\V&amp;=&amp;{\text{Speed}}\T&amp;=&amp;{\text{Thrust}}\D&amp;=&amp;{\text{Drag}}\W&amp;=&amp;{\text{Weight}}\end{array}}}$$</p>
-<p>换言之，特定的过剩能量与净动力的比率与平面的重量成比例并且与速度成比例。（注意，在尺寸上，PS {\ displaystyle P_ {S}} P_S具有“速度”的单位，而不是“特定能量”（每单位质量的能量）。）</p>
-<p>通过计算发动机在考虑到减缓飞机的摩擦和其他空气动力学问题后移动飞机的能力，可以找到净动力。比率（TD）/ W类似于T / W，即推力重量比，其也用作飞机和火箭的品质因数。通过将动力归一化到平面的重量，很明显平面的效率如何。一个非常大的发动机可能会产生巨大的推力，但可能会很重，甚至不会抬起自己。当发动机足够强大以使飞机在90度上升轨迹中保持恒定速度时，该比率为单位（TD）/ W = 1。F-16等战斗机的T / W比率接近1，具体取决于燃油重量和武器装备。</p>
-<p>T / W和（TD）/ W之间的差异是T / W不包括摩擦和其他空气动力学损失的影响。当飞机移动非常缓慢时，这些损失很小，可以忽略不计。但是，T / W并未准确描述飞机在正常运行条件下的性能。通过在公式中包含阻力，平面的空气动力学也总结在PS {\ displaystyle P_ {S}} P_S值中。</p>
-<p>SEE [需要澄清]模型与飞机的速度成比例。这意味着飞机能够飞得越快，得分就越高。这个模型的其他部分（推力，阻力和重量）可能会说飞机非常出色，但是一个好的战斗机也必须快速行驶。</p>
-<p>朝鲜战争中的美国喷气式战斗机飞行员博伊德在20世纪60年代初开始研究该理论。他与埃格林空军基地的数学家托马斯克里斯蒂合作，利用基地的高速计算机来比较韩国和越南战争中美国和苏联飞机的性能范围。他们在1964年完成了关于他们研究的两卷报告。能量机动性在美国空军中得到了接受，并使F-15 Eagle和后来的F-16 Fighting Falcon战斗机的要求有所改善。[2]<br>笔记</p>
-<p>纽菲尔德，雅各布; Watson，George M.（Jr。）; Chenoweth，David，编辑。（1997年），技术和空军：回顾性评估（PDF），空军历史和博物馆计划，美国空军，p。204</p>
-<p>Jenkins, Dennis R. McDonnell Douglas F-15 Eagle, Supreme Heavy-Weight Fighter, p.7. Aerofax, 1998.<br>参考</p>
-<p>Hammond, Grant T. The Mind of War: John Boyd and American Security. Washington, D.C.: Smithsonian Institution Press, 2001. ISBN 1-56098-941-6 and ISBN 1-58834-178-X. Coram, Robert. Boyd: The Fighter Pilot Who Changed the Art of War. New York: Back Bay Books, 2002. ISBN 0-316-88146-5 and ISBN 0-316-79688-3. Wendl, M.J., G.G. Grose, J.L. Porter, and V.R. Pruitt. Flight/Propulsion Control Integration Aspects of Energy Management. Society of Automotive Engineers, 1974, p. 740480.</p>
-<p>Energy–maneuverability theory is a model of aircraft performance. It was developed by Col. John Boyd, a fighter pilot, and Thomas P. Christie a mathematician with the Air Force,[1] and is useful in describing an aircraft’s performance as the total of kinetic and potential energies or aircraft specific energy. It relates the thrust, weight, aerodynamic drag, wing area, and other flight characteristics of an aircraft into a quantitative model. This allows combat capabilities of various aircraft or prospective design trade-offs to be predicted and compared.</p>
-<p>All of these aspects of airplane performance are compressed into a single value by the following formula:</p>
-<pre><code>P S = V ( T − D W ) V = Speed T = Thrust D = Drag W = Weight {\displaystyle {\begin{array}{rcl}P_{S}&amp;=&amp;V\left({\frac {T-D}{W}}\right)\\\\V&amp;=&amp;{\text{Speed}}\\T&amp;=&amp;{\text{Thrust}}\\D&amp;=&amp;{\text{Drag}}\\W&amp;=&amp;{\text{Weight}}\end{array}}} {\displaystyle {\begin{array}{rcl}P_{S}&amp;=&amp;V\left({\frac {T-D}{W}}\right)\\\\V&amp;=&amp;{\text{Speed}}\\T&amp;=&amp;{\text{Thrust}}\\D&amp;=&amp;{\text{Drag}}\\W&amp;=&amp;{\text{Weight}}\end{array}}}</code></pre><p>In words, the specific excess energy is proportional to the ratio of net motive forces compared to the weight of the plane and proportional to speed. (Note that dimensionally, P S {\displaystyle P_{S}} P_S has units of “speed,” not “specific energy” (energy per unit mass).)</p>
-<p>The net motive force is found by calculating the engine’s ability to move the plane after accounting for friction and other aerodynamic issues that slow down the plane. The ratio (T-D)/W is similar to T/W, the Thrust-to-weight ratio, which is also used as a figure of merit for airplanes and rockets. By normalizing the motive forces to the weight of the plane, it is clear how efficient the plane is. A very large engine may be able to generate a huge thrust but could be so heavy that it would not even lift itself. The ratio is unity (T-D)/W = 1 when the engine is powerful enough to keep the plane at constant speed in a 90 degree ascending trajectory. Fighter jets, such as the F-16 have a T/W ratio close to 1, depending on fuel weight and armament.</p>
-<p>The difference between T/W and (T-D)/W is that T/W does not include the effects of friction and other aerodynamic losses. When a plane is moving very slowly, these losses are small and can be ignored. However, T/W does not accurately describe the performance of the plane at its normal operating conditions. By including drag in the formula, the aerodynamics of the plane are also summarized in the P S {\displaystyle P_{S}} P_S value.</p>
-<p>The SEE[clarification needed] model is proportional to the speed of the plane. This means that the faster the plane is capable of flying, the better its score. The other parts of this model (thrust, drag, and weight) may say that a plane is excellent but a good fighter must also go fast.</p>
-<p>Boyd, a U.S. jet fighter pilot in the Korean War, began developing the theory in the early 1960s. He teamed with mathematician Thomas Christie at Eglin Air Force Base to use the base’s high-speed computer to compare the performance envelopes of U.S. and Soviet aircraft from the Korean and Vietnam Wars. They completed a two-volume report on their studies in 1964. Energy Maneuverability came to be accepted within the U.S. Air Force and brought about improvements in the requirements for the F-15 Eagle and later the F-16 Fighting Falcon fighters.[2]<br>Notes</p>
-<p>Neufeld, Jacob; Watson, George M. (Jr.); Chenoweth, David, eds. (1997), Technology and the Air Force: A Retrospective Assessment (PDF), Air Force History and Museums Program, United States Air Force, p. 204</p>
-<pre><code>Jenkins, Dennis R. McDonnell Douglas F-15 Eagle, Supreme Heavy-Weight Fighter, p.7. Aerofax, 1998.</code></pre><p>References</p>
-<pre><code>Hammond, Grant T. The Mind of War: John Boyd and American Security. Washington, D.C.: Smithsonian Institution Press, 2001. ISBN 1-56098-941-6 and ISBN 1-58834-178-X.
-Coram, Robert. Boyd: The Fighter Pilot Who Changed the Art of War. New York: Back Bay Books, 2002. ISBN 0-316-88146-5 and ISBN 0-316-79688-3.
-Wendl, M.J., G.G. Grose, J.L. Porter, and V.R. Pruitt. Flight/Propulsion Control Integration Aspects of Energy Management. Society of Automotive Engineers, 1974, p. 740480.</code></pre>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/13/Energy–maneuverability-theory/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-to-be-or-to-do" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/13/to-be-or-to-do/">to be or to do</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/13/to-be-or-to-do/" class="archive-article-date">
-  	<time datetime="2019-08-13T03:26:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在： 男人的生活，行动，领导，在男子气概中的教训</p>
-<p>Brett＆Kate McKay • 2014年1月22日 最后更新时间： 2018年12月7日</p>
-<h1 id="约翰博伊德的唱名表：你想成为某人还是做点什么？"><a href="#约翰博伊德的唱名表：你想成为某人还是做点什么？" class="headerlink" title="约翰博伊德的唱名表：你想成为某人还是做点什么？"></a>约翰博伊德的唱名表：你想成为某人还是做点什么？</h1><p>约翰博伊德战斗机飞行员空军战略家 </p>
-<p>根据他的传记作者罗伯特·科拉姆（Robert Coram）的说法，约翰·博伊德（John Boyd）对战斗机战术，飞机设计和空战理论的贡献超过了空军历史上的任何人。</p>
-<p>作为一名战斗机飞行员，他不败并赢得了绰号“40-Second Boyd”，因为他能够在一分钟内赢得任何混战。</p>
-<p>在驾驶舱中无与伦比，他的思想也没有竞争对手。他不仅仅是一个战斗的战士，而是一个战士工程师和战士 - 哲学家。</p>
-<p>当他33岁时，他写了“空中攻击研究”，这首次编写了最佳的狗斗战术，成为了“空战圣经”，并彻底改变了世界上每一支空军的方法。</p>
-<p>他的能量可操作性（EM）理论帮助生产了具有传奇色彩的F-15，F-16和A-10飞机。</p>
-<p>他开发的一个简报，“冲突模式”，改变了空军和地面部队的作战策略，引入了经常引用的，通常被误解的OODA循环，“使他成为自孙子写”战争艺术“以来最具影响力的军事思想家2，400年前。“</p>
-<p>总而言之，约翰博伊德在美国空军服役了二十四年并经历了三次战争。</p>
-<p>但他从来没有晋升过上校。</p>
-<p>所有这些都是因为博伊德顽固地拒绝妥协他的原则和进步的理想。</p>
-<h2 id="一把叉子在路上"><a href="#一把叉子在路上" class="headerlink" title="一把叉子在路上"></a>一把叉子在路上</h2><p>尽管博伊德在年轻时就加入了军队 - 在第二次世界大战期间作为一名大三学生从高中辍学加入陆军航空兵团 - 但他从来不适合美国的战斗部队。</p>
-<p>并不是说他没有战斗策略和方法的头脑。恰恰相反。当他获得翅膀时，他的飞行员们认为他是一个“好棍子”，他们不断向他寻求关于如何改进的提示和想法。因此，他开始撰写非正式简报，绘制有关处理技巧和空对空技术的图表，并为感兴趣的人举办临时课程。这导致在拉斯维加斯郊外的内利斯空军基地的高级精英战斗机武器学校担任讲师和学术主任。在那里，他着手彻底改革策略课程。空中战术以前是从飞行员到飞行员的一种艺术; 博伊德开始着手开发和编纂最好的技术 - 将斗狗变成一门科学。</p>
-<p>然而，博伊德并不适合这个机构。他不是那些只是因为订单而遵守订单的经典士兵。预计一名军官将受到良好的纪律处分，对上级表示恭敬，并且是现状的捍卫者。博伊德没有这些东西。自第一次世界大战以来，空中战术并未发生太大变化，但并非所有人都乐于看到他们受到挑战 - 他们喜欢按照他们一直以来的方式做事。但博伊德知道自己是对的时候不会退缩。</p>
-<p>他的信念和他的对抗风格的强度为他赢得了绰号“The Mad Major”和“Genghis John。”Boyd不断地对完全不服从的边缘调情，他知道这一点。他喜欢说，“ 你必须挑战所有的假设。如果你不这样做，那么第一天的教义就会永远成为教条。“</p>
-<p>博伊德的光彩与傲慢的结合使他成为一个真正的两极分化。在他的表现评论中，他的一些上司批评他的举止和缺乏尊重，而其他人称他为他们所知道的最有才华和最敬业的官员。前者试图破坏他的职业生涯，而后者则努力让他留在队伍中，而博伊德起初确信他的支持者会赢得这一天。</p>
-<p>因此，当他因为一些无关紧要但又合规的纸张推动者而获得晋升而被传递时，Coram写道，Boyd受到这种打击“深受影响”：</p>
-<p>“这是他职业生涯中的关键事件，也是个人的顿悟。通常，当一个男人年轻且理想主义时，他相信如果他努力工作并做正确的事，那么成功就会随之而来。这就是博伊德的母亲和儿时导师告诉他的。但是，在军队中，努力工作和成功并不总是在一起，成功是由军衔定义的，而达到更高的级别需要符合军方的价值体系。那些不顺从的人终有一天会意识到做正确事情的道路已经偏离了成功的道路，然后他们必须决定他们将在生活中遵循哪条道路。几乎可以肯定的是，他意识到，如果他在完成所有这些工作之后没有提前晋升为中校，他将永远不会获得高级别。“</p>
-<p>当许多官员意识到他们无法达到层级的顶层时，他们会辞职。但博伊德没有加入军队，在他的制服上积累徽章; 他被“改变人们对航空的基本认识”的愿望所驱使，并真诚希望为战争和世界作出重大而持久的贡献。空军是一个非常不完美的渠道，但这是最好的。他明白，改变一个机构的最佳方式往往不是从外面辍学和反对它，而是留在并努力从内部改变它。他的工作远未完成。</p>
-<h2 id="成为或做"><a href="#成为或做" class="headerlink" title="成为或做"></a>成为或做</h2><p>在内利斯之后，博伊德被分配到五角大楼，这种气氛更不适合他的气质。正如科拉姆所指出的那样，这是一个野心家的地方 - 他们被称为蓝色套房。在“建筑物”内部取得进展涉及相同剂量的对接和背刺和成功，如果通常以赢得一个人自己的服务分支的最大金额来衡量。一个错误的举动可能会破坏你的职业生涯。</p>
-<p>不过，博伊德并没有卖掉他的灵魂。他并没有被这样一个事实所吓倒：作为一名39岁的少校，该建筑物中的其他人的等级更高，而且牙齿更长。</p>
-<p>他不知疲倦地工作以改进军方的飞机，特别讨厌他的上司的空白检查态度，这些态度往往伴随着对飞机的设计和效率缺乏理性思维。因为博伊德真诚地相信他为美国纳税人工作，他不仅喜欢把蠢货放在臃肿的预算上，而且还非常喜欢它。他非常喜欢挑选欺骗性的数据和“软管”将军，朋友会在他的生日那天买他的花园软管作为插科打的礼物。他曾经在一个将军的领带上烧了一个洞，在他走投无路并开始用点燃的雪茄戳他，同时争论他的一个想法。他在电话里跟他说话的时候，另一位将军泡在嘴边，从椅子上掉下来。</p>
-<p>博伊德在他身后留下了很多敌人，因此他最终被提升为晋升将军并不奇怪。冒犯了这么多人，他们拒绝让他加入他们的稀有队伍。博伊德深感失望。但他为自己选择的课程感到自豪。当他走进制度成功与做正确分歧的十字路口时，他选择做正确的事情。这是一种哲学，他会支持他的Acolytes（他的一组受训者），因为他们权衡是否为他工作并帮助做一些重要的事情，但他们的职业生涯因为协会而受到阻碍，或者保持低调并按照自己的方式工作排名靠前。“老虎，”他会说，“总有一天你会来路上岔路口：”</p>
-<p>“你将不得不决定你想去哪个方向。”他举起手指了指。“如果你这样走，你可以成为某个人。你将不得不妥协，你将不得不背弃你的朋友。但是你将成为俱乐部的一名成员，你将获得晋升，你将得到很好的任务。“然后博伊德举起另一只手指向另一个方向。“或者你可以这样做，你可以做点什么 - 为你的国家，你的空军和你自己。如果你决定要做某事，你可能不会升职，也可能没有得到好的任务，你肯定不会成为上司的最爱。但你不必妥协自己。你将忠于你的朋友和你自己。而你的工作可能会有所作为。成为某人或做某事。在生活中经常有唱名。那是你必须做出决定的时候。要做还是做？你会走哪条路？“</p>
-<h2 id="你会走哪条路？"><a href="#你会走哪条路？" class="headerlink" title="你会走哪条路？"></a>你会走哪条路？</h2><p>在每个人的生活中都有一点，他必须决定他是否会努力成为一个重要的人，或者他是否会努力做一些重要的事情。有时这些追求是相辅相成的; 他们经常没有。</p>
-<p>研究已经一次又一次地表明，我们现代的孩子们渴望的是一种被视为更加迷人的生活，而不是服务和持久遗产。事实上，今天5到11岁的人的三大职业抱负是体育明星，音乐明星和演员。就在25年前，同样的调查发现了老师，医生和银行家。年轻人希望得到认可，成名，并且很早就意识到通往名人的道路（更不用说政府服务）主要涉及告诉人们他们想听到什么 - 包装已经流行的东西并将其卖回去。因为它不仅仅是军队对现状的珍惜; 虽然社会被认为比以往任何时候都更加宽容，但从主流中迅速弹出的任何钉子都会受到重创。在我们的数字时代，正义的在线暴徒可以迅速动员和沉默任何被认为是异常的意见。结果是令人不寒而栗的效果，人们必须看到他们所说的每一个字，以免被公开抨击。</p>
-<p>即使是科学领域也无法免受这种趋势的影响。获得一个人的研究不仅发表在学术期刊上，而且在大众媒体出版物中获得可以带来利润丰厚的书籍交易和演讲活动，而研究甚至有一丝争议可能会引发批评的风暴。当揭示一位着名的社会心理学家完全捏造研究时据称，这些东西可能会增加种族主义倾向，但他承认，他会尝试提出看似原创和令人兴奋的实验和结果，同时也会让人们的先入为主的期望得到满足。在解释他的道德失误时，他指出了这样一个事实，即现代科学家在争夺资金和钦佩时，被迫成为研究人员和营销人员 - 劝说艺术方面的“旅行推销员”。这已经形成了有时以牺牲真理为代价来追求承认的情况。</p>
-<p>挑战现状绝非易事。你可能不会担心赢得名声，而只是坚持你的工作。大学生，在培养他们的“个人品牌”的重要性中受过教育，可以理解的是，在经济缓慢的情况下，做任何可能使他们对雇主不太理想的事情都是可怕的。这就是为什么说实话能力的能力一直与对物质安全的冷漠联系在一起。正如科拉姆写的那样，博伊德理解这一点，并说“ 如果一个人可以将他的需求减少到零，那么他就是真正的自由：没有任何东西可以从他身上拿走而且任何人都无法做到伤害他“他的极度节俭为他赢得了”少数民族居住区上校“的绰号，并且在他的一生中，他住在一间小公寓里，把他那些笨重的汽车撞到了地上。斯巴达的这种生活方式对博伊德的家庭来说很艰难; 当谈到冒着生命危险为了晃动船只时，父亲们肯定有更难走的路线。然而，历史上最伟大的煽动者的孩子们尽管牺牲了他们父亲的立场，却为他们遗留下来的遗产和名字感到非常自豪。</p>
-<p>当你在考虑选择追求正确，有意义或受欢迎的决定时，你会想到你会做什么，我们将给你留下前国防部长罗伯特盖茨在空军学院的毕业演讲中给出的这个激动人心的信息。它适用于那天坐在观众席上的学员，就像现在所有阅读它的人一样：</p>
-<blockquote>
-<p>“在空军学院，与美国的每所大学和公司一样，重点是团队合作，建立共识和协作。但不要搞错，当你必须独自做出一个艰难的，不受欢迎的决定时，你们每个人的时间都会到来; 当你必须质疑上级的意见或告诉他们你不能利用现有的时间和资源完成工作时; 或者当你知道上司告诉新闻界或国会或美国人民是不准确的时候。有一段时间你的整个职业生涯都处于危险之中 - 你会在路上面对博伊德的谚语。做或做。</p>
-</blockquote>
-<p>为了做好准备，你必须有纪律从学院这里培养正直和道德勇气，然后从你最早的时候作为一名委任军官。这些品质不会在一夜之间突然出现，也不会在你承担重要责任后作为启示。这些品质源于你在这里和职业生涯早期做出的小决定，必须在整个过程中得到加强，让你在服务前抵制自我的诱惑。而且你必须始终确保你的道德勇气能为更大的利益服务：它为国家和我们的最高价值服务 - 不是特定的计划，也不是骄傲，也不是狭隘主义。“</p>
-<p>点名时间：是或将要做？你会走哪条路？</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/13/to-be-or-to-do/">展开全文 >></a>
         </p>
       
 
@@ -1558,6 +1530,14 @@ MathJax.Hub.Queue(function() {
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">graphviz dot</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">hadoop</a>
+              </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">java</a>

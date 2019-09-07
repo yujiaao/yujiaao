@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://s.bixuebihui.cn">
-  <title>Tag: javascript promise | 祥说</title>
+  <title>Graphviz dot language spec | 祥说</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="入门知识与提高">
-<meta name="keywords" content="programming">
-<meta property="og:type" content="website">
-<meta property="og:title" content="祥说">
-<meta property="og:url" content="http://s.bixuebihui.cn/tags/javascript-promise/index.html">
+  <meta name="description" content="DOT语言以下是定义DOT语言的抽象语法。终端以粗体显示，非终端以斜体显示。文字字符以单引号给出。括号（和）表示需要时的分组。方括号[和]包含可选项。竖条| 单独的选择。 graph    :    [ strict ] ( graph | digraph ) [ ID ] ‘{‘ stmt_list ‘}’_ stmt_list _    :    [ stmt [ ‘;’ ] stmt_lis">
+<meta name="keywords" content="graphviz dot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Graphviz dot language spec">
+<meta property="og:url" content="http://s.bixuebihui.cn/2019/09/07/Graphviz-dot-language-spec/index.html">
 <meta property="og:site_name" content="祥说">
-<meta property="og:description" content="入门知识与提高">
+<meta property="og:description" content="DOT语言以下是定义DOT语言的抽象语法。终端以粗体显示，非终端以斜体显示。文字字符以单引号给出。括号（和）表示需要时的分组。方括号[和]包含可选项。竖条| 单独的选择。 graph    :    [ strict ] ( graph | digraph ) [ ID ] ‘{‘ stmt_list ‘}’_ stmt_list _    :    [ stmt [ ‘;’ ] stmt_lis">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-07T10:24:29.753Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="祥说">
-<meta name="twitter:description" content="入门知识与提高">
+<meta name="twitter:title" content="Graphviz dot language spec">
+<meta name="twitter:description" content="DOT语言以下是定义DOT语言的抽象语法。终端以粗体显示，非终端以斜体显示。文字字符以单引号给出。括号（和）表示需要时的分组。方括号[和]包含可选项。竖条| 单独的选择。 graph    :    [ strict ] ( graph | digraph ) [ ID ] ‘{‘ stmt_list ‘}’_ stmt_list _    :    [ stmt [ ‘;’ ] stmt_lis">
   
     <link rel="alternative" href="/atom.xml" title="祥说" type="application/atom+xml">
   
@@ -203,60 +204,218 @@ white-space: pre;
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Graphviz-dot-language-spec" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/08/27/we-have-problem-with-promise/" class="archive-article-date">
-  	<time datetime="2019-08-27T13:07:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-27</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/08/27/we-have-problem-with-promise/">we have problem with promise</a>
+    <h1 class="article-title" itemprop="name">
+      Graphviz dot language spec
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/09/07/Graphviz-dot-language-spec/" class="archive-article-date">
+  	<time datetime="2019-09-07T10:23:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="DOT语言"><a href="#DOT语言" class="headerlink" title="DOT语言"></a>DOT语言</h1><p>以下是定义DOT语言的抽象语法。终端以粗体显示，非终端以斜体显示。文字字符以单引号给出。括号（和）表示需要时的分组。方括号[和]包含可选项。竖条| 单独的选择。</p>
+<p><em>graph</em>    :    [ <strong>strict</strong> ] ( <strong>graph</strong> | <strong>digraph</strong> ) [ <em>ID</em> ] ‘{‘ stmt_list ‘}’<br>_ stmt_list _    :    [ stmt [ ‘;’ ] stmt_list ]<br><em>stmt</em>    :    node_stmt<br>|    edge_stmt<br>|    attr_stmt<br>|    <em>ID</em> ‘=’ <em>ID</em><br>|    subgraph<br><em>attr_stmt</em>    :    (<strong>graph</strong> | <strong>node</strong> | <strong>edge</strong>) attr_list<br><em>attr_list</em>    :    ‘[‘ [ a_list ] ‘]’ [ attr_list ]<br><em>a</em>list_    :    <em>ID</em> ‘=’ <em>ID</em> [ (‘;’ | ‘,’) ] [ a_list ]<br><em>edge_stmt</em>    :    (node_id | subgraph) <em>edgeRHS</em> [ attr_list ]<br><em>edgeRHS</em>    :    edgeop (node_id | subgraph) [ <em>edgeRHS</em> ]<br><em>node_stmt</em>    :    node_id [ attr_list ]<br><em>node_id</em>    :    <em>ID</em> [ port ]<br><em>port</em>    :    ‘:’ <em>ID</em> [ ‘:’ compass_pt ]<br>|    ‘:’ compass_pt<br><em>subgraph</em>    :    [ <strong>subgraph</strong> [ <em>ID</em> ] ] ‘{‘ stmt_list ‘}’<br><em>compass_pt</em>    :    (<strong>n</strong> | <strong>ne</strong> | <strong>e</strong> | <strong>se</strong> | <strong>s</strong> | <strong>sw</strong> | <strong>w</strong> | <strong>nw</strong> | <strong>c</strong> | <strong>_</strong> )</p>
+<p>关键字node，edge，graph，digraph， subgraph和strict与大小写无关。另请注意，允许的罗盘点值不是关键字，因此这些字符串可以在别处用作普通标识符，相反，解析器实际上将接受任何标识符。</p>
+<p><em>ID</em> 是下列之一：</p>
+<ul>
+<li>任何字母（[a-zA-Z\200-\377]）字符串，下划线（’_‘）或数字（[0-9]），不以数字开头;</li>
+<li>数字 [-]?(.[0-9]+|[0-9]+(.[0-9]*)?);</li>
+<li>任何双引号字符串 (“…”) 可能包含转义引号 (&quot;);</li>
+<li>一个HTML字符串（&lt;…&gt;）。</li>
+</ul>
+<p>ID只是一个字符串; 前两种形式中缺少引号字符只是为了简单起见。<code>abc_2</code> 和<code>&quot;abc_2&quot;</code>之间或<code>2.34</code>和 <code>&quot;2.34&quot;</code>之间没有语义差异 。显然，要使用关键字作为 ID，必须引用它。请注意，在 HTML 字符串中，尖括号必须以匹配对的形式出现，并且允许使用换行符和其他格式的空白字符。此外，内容必须是合法的 XML，因此为了将这些字符嵌入属性值或原始文本中，可能需要 “，&amp;，&lt;和&gt;的特殊 XML 转义序列。作为 ID，HTML 字符串可以是任何合法的 XML 字符串。但是，如果用作标签属性，类似 HTML 的标签。<br>引用的字符串和 HTML 字符串都作为一个单元进行扫描，因此任何嵌入的注释都将被视为字符串的一部分。</p>
+<p>一个 <em>edgeop</em> 在有向图中是 -&gt; 和在无向图中是 – 。</p>
+<p>该语言支持 C++ 风格的注释：/*  */ 和//。 另外，以“#”字符开头的行被认为是来自C预处理器的行输出（例如，#34 以指示行34）并被丢弃。</p>
+<p>分号和逗号有助于提高可读性，但不是必需的。此外，可以在结束符之间插入任何数量的空白。</p>
+<p>作为可读性的另一个辅助点，dot 允许双引号字符串跨越多个物理行, 使用紧接在换行符之前的反斜杠的标准C约定来实现。此外，可以使用“+”运算符连接双引号字符串。由于 HTML 字符串可以包含仅用于格式化的换行符，因此该语言不允许在其中使用转义换行符或连接运算符。</p>
+<h2 id="子图和集群"><a href="#子图和集群" class="headerlink" title="子图和集群"></a>子图和集群</h2><p>子图在Graphviz中扮演三个角色。首先，子图可用于表示图结构，表明某些节点和边应该组合在一起。这是子图的通常作用，通常指定有关图组件的语义信息。它还可以为边缘提供方便的简写。边缘语句允许边缘运算符的左侧和右侧都有子图。发生这种情况时，会从左侧的每个节点到右侧的每个节点创建一条边。例如，规范<br>    A  -&gt; {B C}<br>相当于<br>    A  -&gt; B<br>    A  -&gt; C</p>
+<p>在第二个角色中，子图可以提供设置属性的上下文。例如，子图可以指定 blue 是其中定义的所有节点的默认颜色。在图形绘制的上下文中，一个更有趣的例子是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">subgraph &#123; </span><br><span class="line">rank = same; A; B; C; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此（匿名）子图指定如果使用点绘制，节点A，B和C应全部放在相同的等级上。</p>
+<p>子图的第三个角色直接涉及图形将如何由某些布局引擎布局。如果子图的名称以簇 cluster 开头，则 Graphviz 将子图注释为特殊的簇子图。如果支持，布局引擎将执行布局，以便将属于集群的节点绘制在一起，并将集群的整个绘图包含在边界矩形内。请注意，无论好坏，集群子图都不是 DOT 语言的一部分，而只是某些布局引擎所遵循的语法约定。</p>
+<h2 id="词汇和语义笔记"><a href="#词汇和语义笔记" class="headerlink" title="词汇和语义笔记"></a>词汇和语义笔记</h2><p>必须将图形指定为有向图或图形。在语义上，这表示是否存在从边缘节点之一到另一个节点的自然方向。从词法上讲，有向图必须使用边运算符指定边 -&gt; 而无向图必须使用 – 。在操作上，该区别用于定义不同的默认呈现属性。例如，默认情况下，将使用指向头节点的箭头绘制有向图中的边。对于普通图形，默认情况下绘制的边没有任何箭头。</p>
+<p>图表也可以描述为严格的 <strong>strict</strong> 。这禁止创建多边缘，即，在定向情况下，最多只有一个边具有给定的尾节点和头节点。对于无向图，最多可以有一个边连接到相同的两个节点。使用相同的两个节点的后续边缘语句将使用先前定义的边缘语句识别边缘, 并应用边缘语句中给出的任何属性。例如，图表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">strict graph &#123; </span><br><span class="line">  a -- b</span><br><span class="line">  a -- b</span><br><span class="line">  b -- a [color=blue]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将有一个连接节点 a 和 b 的边，其颜色为蓝色。<br>如果使用节点， 边或图形语句或未附加到节点或边的属性赋值定义默认属性，则之后定义的任何相应类型的对象将继承此属性值。这将保持不变，直到将默认属性设置为新值，从该点开始使用新值。在设置默认属性之前定义的对象在创建默认属性定义后将具有附加到属性的空字符串值。</p>
+<p>特别要注意，子图在定义时接收其父图的属性设置。这可能很有用; 例如，可以将字体分配给根图，所有子图也将使用该字体。但是，对于某些属性，此属性是不合需要的。如果将标签附加到根图上，则所有子图使用标签可能不是所希望的效果。不是在图形顶部列出图形属性，而是在子图形中根据需要重置属性，可以简单地推迟图形中的属性定义，直到定义了适当的子图形。</p>
+<p>如果边缘属于群集，则其端点属于该群集。因此，放置边的位置可以影响布局，因为簇有时会递归布局。</p>
+<p>子图和集群有一些限制。首先，目前，图形及其子图的名称共享相同的名称空间。因此，每个子图必须具有唯一的名称。其次，虽然节点可以属于任意数量的子图，但是当被视为节点和边的子集时，假设簇形成严格的层次结构。</p>
+<h2 id="字符编码"><a href="#字符编码" class="headerlink" title="字符编码"></a>字符编码</h2><p>DOT 语言至少假设 ascii 字符集。带引号的字符串，无论是普通字符串还是类 HTML 字符串，都可能包含非 ascii 字符。在大多数情况下，这些字符串是未被解释的：它们只是作为唯一标识符或通过未触及传递的值。但是，要显示标签，这要求软件能够计算文本的大小并确定适当的字形。为此，它需要知道使用什么字符编码。<br>默认情况下，DOT 采用 UTF-8 字符编码。它还接受 Latin1（ISO-8859-1）字符集，假设输入图使用 <a href="https://graphviz.gitlab.io/_pages/doc/info/attrs.html#a:charset" target="_blank" rel="noopener">charset</a> 属性来指定它。对于使用其他字符集的图形，通常有程序，例如 iconv，它将从一个字符集转换为另一个字符集。</p>
+<p>避免标签中非 ascii 字符的另一种方法是将 HTML 实体用于特殊字符。在标签评估期间，这些实体被转换为基础角色。此 <a href="https://graphviz.gitlab.io/_pages/doc/char.html" target="_blank" rel="noopener">表</a> 显示受支持的实体及其 Unicode 值，典型字形和 HTML 实体名称。因此，要将小写的希腊语 beta 包含在字符串中，可以使用 ascii 序列和 <code>&amp;beta;</code>; 。通常，应该只使用输出字符集中允许的实体，并且字体中有一个字形。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wechat.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">javascript promise</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">graphviz dot</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://s.bixuebihui.cn/2019/09/07/Graphviz-dot-language-spec/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2019/09/07/Hadoop-Big-Data-Solutions/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hadoop - Big Data Solutions</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "http://s.bixuebihui.cn/2019/09/07/Graphviz-dot-language-spec/",
+  owner: 'yujiaao',
+  repo: 'quiz_wx',
+  oauth: {
+    client_id: 'c9047d120a4ed1654f10',
+    client_secret: 'ce595f06cf372fe9ffaece4be2847d88241d31df',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+  
 
 
           </div>
@@ -302,9 +461,9 @@ white-space: pre;
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
