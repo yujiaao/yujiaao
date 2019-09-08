@@ -230,66 +230,33 @@ white-space: pre;
 <p>The geometry and style of all node shapes are affected by the node attributes <a href="https://www.graphviz.org/doc/info/attrs.html#d:fixedsize" target="_blank" rel="noopener">fixedsize</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:fontname" target="_blank" rel="noopener">fontname</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:fontsize" target="_blank" rel="noopener">fontsize</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:height" target="_blank" rel="noopener">height</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:label" target="_blank" rel="noopener">label</a>, <a href="#d:style">style</a> and <a href="https://www.graphviz.org/doc/info/attrs.html#d:width" target="_blank" rel="noopener">width</a>. </p>
 <p>主要有三种类型的形状： 多边形为主， 基于记录和 用户自定义。基于记录的形状在很大程度上被取代，并且被类似HTML的标签大大推广。也就是说，可以考虑使用shape = none，margin = 0和类似HTML的标签，而不是使用shape = record。<br>所有节点形状的几何和样式都受节点属性 fixedsize， fontname， fontsize， height， label， style和 width的影响。</p>
 <h2 id="Polygon-based-Nodes-基于多边形的节点"><a href="#Polygon-based-Nodes-基于多边形的节点" class="headerlink" title="Polygon-based Nodes 基于多边形的节点"></a>Polygon-based Nodes 基于多边形的节点</h2><p>可能的基于多边形的形状显示如下</p>
-<p><img src="https://www.graphviz.org/doc/info/box.gif" alt="box"></p>
-<p><img src="https://www.graphviz.org/doc/info/polygon.gif" alt="polygon"></p>
-<p><img src="https://www.graphviz.org/doc/info/ellipse.gif" alt="ellipse"></p>
-<p><img src="https://www.graphviz.org/doc/info/oval.gif" alt></p>
-<p>box polygon ellipse oval<img src="https://www.graphviz.org/doc/info/circle.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/point.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/egg.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/triangle.gif" alt></p>
-<p>circle point egg triangle<img src="https://www.graphviz.org/doc/info/plaintext.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/plain.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/diamond.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/trapezium.gif" alt></p>
-<p>plaintext plain diamond trapezium<br><img src="https://www.graphviz.org/doc/info/parallelogram.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/house.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/pentagon.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/hexagon.gif" alt></p>
-<p>parallelogram house pentagon hexagon<br><img src="https://www.graphviz.org/doc/info/septagon.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/octagon.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/doublecircle.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/doubleoctagon.gif" alt></p>
-<p>septagon octagon doublecircle doubleoctagon<br><img src="https://www.graphviz.org/doc/info/tripleoctagon.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/invtriangle.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/invtrapezium.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/invhouse.gif" alt></p>
-<p>tripleoctagon invtriangle invtrapezium invhouse<br><img src="https://www.graphviz.org/doc/info/Mdiamond.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/Msquare.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/Mcircle.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/rect.gif" alt></p>
-<p>Mdiamond Msquare Mcircle rect<br><img src="https://www.graphviz.org/doc/info/rectangle.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/square.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/star.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/none.gif" alt></p>
-<p>rectangle square star none<br><img src="https://www.graphviz.org/doc/info/underline.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/cylinder.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/note.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/tab.gif" alt></p>
-<p>underline cylinder note tab<br><img src="https://www.graphviz.org/doc/info/folder.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/box3d.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/component.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/promoter.gif" alt></p>
-<p>folder box3d component promoter<br><img src="https://www.graphviz.org/doc/info/cds.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/terminator.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/utr.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/primersite.gif" alt></p>
-<p>cds terminator utrprimer site<img src="https://www.graphviz.org/doc/info/restrictionsite.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/fivepoverhang.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/threepoverhang.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/noverhang.gif" alt></p>
-<p>restriction site fivepoverhang threepoverhang noverhang<br><img src="https://www.graphviz.org/doc/info/assembly.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/signature.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/insulator.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/ribosite.gif" alt></p>
-<p>assembly signature insulator ribosite<br><img src="https://www.graphviz.org/doc/info/rnastab.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/proteasesite.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/proteinstab.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/rpromoter.gif" alt></p>
-<p>rnastab protease site proteinstab rpromoter<br><img src="https://www.graphviz.org/doc/info/rarrow.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/larrow.gif" alt></p>
-<p><img src="https://www.graphviz.org/doc/info/lpromoter.gif" alt></p>
-<p>rarrow larrow lpromoter<br>如图所示，矩形和矩形是box的同义词，没有一个是明文的同义词。shape plain类似于这两个，除了它还强制 width = 0 height = 0 margin = 0，这保证了节点的实际大小完全由标签决定。例如，当使用类似HTML的标签时，这很有用。此外，与其余部分不同，我们已经显示了这三个以及下划线，没有style =填充 以指示正常使用。如果打开填充，标签文本将显示在填充矩形中。</p>
+<p><img src="https://www.graphviz.org/doc/info/box.gif" alt="box"> <img src="https://www.graphviz.org/doc/info/polygon.gif" alt="polygon"> <img src="https://www.graphviz.org/doc/info/ellipse.gif" alt="ellipse"> <img src="https://www.graphviz.org/doc/info/oval.gif" alt></p>
+<p>box polygon ellipse oval</p>
+<p><img src="https://www.graphviz.org/doc/info/circle.gif" alt> <img src="https://www.graphviz.org/doc/info/point.gif" alt> <img src="https://www.graphviz.org/doc/info/egg.gif" alt> <img src="https://www.graphviz.org/doc/info/triangle.gif" alt><br>circle point egg triangle</p>
+<p><img src="https://www.graphviz.org/doc/info/plaintext.gif" alt> <img src="https://www.graphviz.org/doc/info/plain.gif" alt> <img src="https://www.graphviz.org/doc/info/diamond.gif" alt> <img src="https://www.graphviz.org/doc/info/trapezium.gif" alt></p>
+<p>plaintext plain diamond trapezium </p>
+<p><img src="https://www.graphviz.org/doc/info/parallelogram.gif" alt> <img src="https://www.graphviz.org/doc/info/house.gif" alt> <img src="https://www.graphviz.org/doc/info/pentagon.gif" alt> <img src="https://www.graphviz.org/doc/info/hexagon.gif" alt> </p>
+<p>parallelogram house pentagon hexagon</p>
+<p><img src="https://www.graphviz.org/doc/info/septagon.gif" alt> <img src="https://www.graphviz.org/doc/info/octagon.gif" alt> <img src="https://www.graphviz.org/doc/info/doublecircle.gif" alt> <img src="https://www.graphviz.org/doc/info/doubleoctagon.gif" alt></p>
+<p>septagon octagon doublecircle doubleoctagon</p>
+<p><img src="https://www.graphviz.org/doc/info/tripleoctagon.gif" alt> <img src="https://www.graphviz.org/doc/info/invtriangle.gif" alt> <img src="https://www.graphviz.org/doc/info/invtrapezium.gif" alt> <img src="https://www.graphviz.org/doc/info/invhouse.gif" alt></p>
+<p>tripleoctagon invtriangle invtrapezium invhouse</p>
+<p><img src="https://www.graphviz.org/doc/info/Mdiamond.gif" alt> <img src="https://www.graphviz.org/doc/info/Msquare.gif" alt> <img src="https://www.graphviz.org/doc/info/Mcircle.gif" alt> <img src="https://www.graphviz.org/doc/info/rect.gif" alt></p>
+<p>Mdiamond Msquare Mcircle rect</p>
+<p><img src="https://www.graphviz.org/doc/info/rectangle.gif" alt> <img src="https://www.graphviz.org/doc/info/square.gif" alt> <img src="https://www.graphviz.org/doc/info/star.gif" alt> <img src="https://www.graphviz.org/doc/info/none.gif" alt></p>
+<p>rectangle square star none</p>
+<p><img src="https://www.graphviz.org/doc/info/underline.gif" alt> <img src="https://www.graphviz.org/doc/info/cylinder.gif" alt> <img src="https://www.graphviz.org/doc/info/note.gif" alt> <img src="https://www.graphviz.org/doc/info/tab.gif" alt></p>
+<p>underline cylinder note tab</p>
+<p><img src="https://www.graphviz.org/doc/info/folder.gif" alt> <img src="https://www.graphviz.org/doc/info/box3d.gif" alt> <img src="https://www.graphviz.org/doc/info/component.gif" alt> <img src="https://www.graphviz.org/doc/info/promoter.gif" alt></p>
+<p>folder box3d component promoter</p>
+<p><img src="https://www.graphviz.org/doc/info/cds.gif" alt> <img src="https://www.graphviz.org/doc/info/terminator.gif" alt> <img src="https://www.graphviz.org/doc/info/utr.gif" alt> <img src="https://www.graphviz.org/doc/info/primersite.gif" alt></p>
+<p>cds terminator utrprimer site</p>
+<p><img src="https://www.graphviz.org/doc/info/restrictionsite.gif" alt> <img src="https://www.graphviz.org/doc/info/fivepoverhang.gif" alt> <img src="https://www.graphviz.org/doc/info/threepoverhang.gif" alt> <img src="https://www.graphviz.org/doc/info/noverhang.gif" alt></p>
+<p>restriction site fivepoverhang threepoverhang noverhang<br><img src="https://www.graphviz.org/doc/info/assembly.gif" alt> <img src="https://www.graphviz.org/doc/info/signature.gif" alt> <img src="https://www.graphviz.org/doc/info/insulator.gif" alt> <img src="https://www.graphviz.org/doc/info/ribosite.gif" alt></p>
+<p>assembly signature insulator ribosite<br><img src="https://www.graphviz.org/doc/info/rnastab.gif" alt> <img src="https://www.graphviz.org/doc/info/proteasesite.gif" alt> <img src="https://www.graphviz.org/doc/info/proteinstab.gif" alt> <img src="https://www.graphviz.org/doc/info/rpromoter.gif" alt></p>
+<p>rnastab protease site proteinstab rpromoter<br><img src="https://www.graphviz.org/doc/info/rarrow.gif" alt> <img src="https://www.graphviz.org/doc/info/larrow.gif" alt> <img src="https://www.graphviz.org/doc/info/lpromoter.gif" alt> </p>
+<p>rarrow larrow lpromoter</p>
+<p>如图所示，矩形和矩形是box的同义词，没有一个是明文的同义词。shape plain类似于这两个，除了它还强制 width = 0 height = 0 margin = 0，这保证了节点的实际大小完全由标签决定。例如，当使用类似HTML的标签时，这很有用。此外，与其余部分不同，我们已经显示了这三个以及下划线，没有style =填充 以指示正常使用。如果打开填充，标签文本将显示在填充矩形中。</p>
 <p>As the figures suggest, the shapes rect and rectangle are synonyms for box, and none is a synonym for plaintext. The shape plain is similar to these two, except that it also enforces width=0 height=0 margin=0, which guarantees that the actual size of the node is entirely determined by the label. This is useful, for example, when using <a href="https://www.graphviz.org/doc/info/shapes.html#html" target="_blank" rel="noopener">HTML-like labels</a>. Also, unlike the rest, we have shown these three, as well as underline, without style=filled to indicate the normal use. If fill were turned on, the label text would appear in a filled rectangle. </p>
 <p>基于多边形的形状的几何形状也受节点属性 规则， 周边和 方向的影响。如果shape =“polygon”，则还使用属性 side， skew和 distortion。如果未设置，则分别默认为4,0.0和0.0。点形状的特殊之处在于它仅受周边， 宽度和 高度属性的影响。</p>
 <p>The geometries of polygon-based shapes are also affected by the node attributes <a href="https://www.graphviz.org/doc/info/attrs.html#d:regular" target="_blank" rel="noopener">regular</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:peripheries" target="_blank" rel="noopener">peripheries</a> and <a href="https://www.graphviz.org/doc/info/attrs.html#d:orientation" target="_blank" rel="noopener">orientation</a>. If shape=”polygon”, the attributes <a href="https://www.graphviz.org/doc/info/attrs.html#d:sides" target="_blank" rel="noopener">sides</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:skew" target="_blank" rel="noopener">skew</a> and <a href="https://www.graphviz.org/doc/info/attrs.html#d:distortion" target="_blank" rel="noopener">distortion</a> are also used. If unset, they default to 4, 0.0 and 0.0, respectively. The point shape is special in that it is only affected by the <a href="https://www.graphviz.org/doc/info/attrs.html#d:peripheries" target="_blank" rel="noopener">peripheries</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:width" target="_blank" rel="noopener">width</a> and <a href="https://www.graphviz.org/doc/info/attrs.html#d:height" target="_blank" rel="noopener">height</a> attributes. </p>
