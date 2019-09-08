@@ -205,6 +205,416 @@ white-space: pre;
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Graphviz-node-shapes" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/08/Graphviz-node-shapes/">Graphviz node shapes</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/08/Graphviz-node-shapes/" class="archive-article-date">
+  	<time datetime="2019-09-08T06:23:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Node-Shapes"><a href="#Node-Shapes" class="headerlink" title="Node Shapes"></a>Node Shapes</h1><h1 id="Node-Shapes-1"><a href="#Node-Shapes-1" class="headerlink" title="Node Shapes"></a>Node Shapes</h1><hr>
+<p>There are three main types of shapes : <a href="https://www.graphviz.org/doc/info/shapes.html#polygon" target="_blank" rel="noopener">polygon-based</a>, <a href="https://www.graphviz.org/doc/info/shapes.html#record" target="_blank" rel="noopener">record-based</a> and <a href="https://www.graphviz.org/doc/info/shapes.html#epsf" target="_blank" rel="noopener">user-defined</a>. The record-based shape has largely been superseded and greatly generalized by <a href="https://www.graphviz.org/doc/info/shapes.html#html" target="_blank" rel="noopener">HTML-like labels</a>. That is, instead of using shape=record, one might consider using shape=none, margin=0 and an HTML-like label. </p>
+<p>The geometry and style of all node shapes are affected by the node attributes <a href="https://www.graphviz.org/doc/info/attrs.html#d:fixedsize" target="_blank" rel="noopener">fixedsize</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:fontname" target="_blank" rel="noopener">fontname</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:fontsize" target="_blank" rel="noopener">fontsize</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:height" target="_blank" rel="noopener">height</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:label" target="_blank" rel="noopener">label</a>, <a href="#d:style">style</a> and <a href="https://www.graphviz.org/doc/info/attrs.html#d:width" target="_blank" rel="noopener">width</a>. </p>
+<h2 id="Polygon-based-Nodes"><a href="#Polygon-based-Nodes" class="headerlink" title="Polygon-based Nodes"></a>Polygon-based Nodes</h2><p>The possible polygon-based shapes are displayed below. </p>
+<p><img src="https://www.graphviz.org/doc/info/box.gif" alt="box"></p>
+<p><img src="https://www.graphviz.org/doc/info/polygon.gif" alt="polygon"></p>
+<p><img src="https://www.graphviz.org/doc/info/ellipse.gif" alt="ellipse"></p>
+<p><img src="https://www.graphviz.org/doc/info/oval.gif" alt></p>
+<p>box polygon ellipse oval<img src="https://www.graphviz.org/doc/info/circle.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/point.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/egg.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/triangle.gif" alt></p>
+<p>circle point egg triangle<img src="https://www.graphviz.org/doc/info/plaintext.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/plain.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/diamond.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/trapezium.gif" alt></p>
+<p>plaintext plain diamond trapezium<br><img src="https://www.graphviz.org/doc/info/parallelogram.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/house.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/pentagon.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/hexagon.gif" alt></p>
+<p>parallelogram house pentagon hexagon<br><img src="https://www.graphviz.org/doc/info/septagon.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/octagon.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/doublecircle.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/doubleoctagon.gif" alt></p>
+<p>septagon octagon doublecircle doubleoctagon<br><img src="https://www.graphviz.org/doc/info/tripleoctagon.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/invtriangle.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/invtrapezium.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/invhouse.gif" alt></p>
+<p>tripleoctagon invtriangle invtrapezium invhouse<img src="https://www.graphviz.org/doc/info/Mdiamond.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/Msquare.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/Mcircle.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/rect.gif" alt></p>
+<p>Mdiamond Msquare Mcircle rect<br><img src="https://www.graphviz.org/doc/info/rectangle.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/square.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/star.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/none.gif" alt></p>
+<p>rectangle square star none<br><img src="https://www.graphviz.org/doc/info/underline.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/cylinder.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/note.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/tab.gif" alt></p>
+<p>underline cylinder note tab<br><img src="https://www.graphviz.org/doc/info/folder.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/box3d.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/component.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/promoter.gif" alt></p>
+<p>folder box3d component promoter<br><img src="https://www.graphviz.org/doc/info/cds.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/terminator.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/utr.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/primersite.gif" alt></p>
+<p>cds terminator utrprimer site<img src="https://www.graphviz.org/doc/info/restrictionsite.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/fivepoverhang.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/threepoverhang.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/noverhang.gif" alt></p>
+<p>restriction site fivepoverhang threepoverhang noverhang<br><img src="https://www.graphviz.org/doc/info/assembly.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/signature.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/insulator.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/ribosite.gif" alt></p>
+<p>assembly signature insulator ribosite<br><img src="https://www.graphviz.org/doc/info/rnastab.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/proteasesite.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/proteinstab.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/rpromoter.gif" alt></p>
+<p>rnastab protease site proteinstab rpromoter<br><img src="https://www.graphviz.org/doc/info/rarrow.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/larrow.gif" alt></p>
+<p><img src="https://www.graphviz.org/doc/info/lpromoter.gif" alt></p>
+<p>rarrow larrow lpromoter</p>
+<p>As the figures suggest, the shapes rect and rectangle are synonyms for box, and none is a synonym for plaintext. The shape plain is similar to these two, except that it also enforces width=0 height=0 margin=0, which guarantees that the actual size of the node is entirely determined by the label. This is useful, for example, when using <a href="https://www.graphviz.org/doc/info/shapes.html#html" target="_blank" rel="noopener">HTML-like labels</a>. Also, unlike the rest, we have shown these three, as well as underline, without style=filled to indicate the normal use. If fill were turned on, the label text would appear in a filled rectangle. </p>
+<p>The geometries of polygon-based shapes are also affected by the node attributes <a href="https://www.graphviz.org/doc/info/attrs.html#d:regular" target="_blank" rel="noopener">regular</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:peripheries" target="_blank" rel="noopener">peripheries</a> and <a href="https://www.graphviz.org/doc/info/attrs.html#d:orientation" target="_blank" rel="noopener">orientation</a>. If shape=”polygon”, the attributes <a href="https://www.graphviz.org/doc/info/attrs.html#d:sides" target="_blank" rel="noopener">sides</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:skew" target="_blank" rel="noopener">skew</a> and <a href="https://www.graphviz.org/doc/info/attrs.html#d:distortion" target="_blank" rel="noopener">distortion</a> are also used. If unset, they default to 4, 0.0 and 0.0, respectively. The point shape is special in that it is only affected by the <a href="https://www.graphviz.org/doc/info/attrs.html#d:peripheries" target="_blank" rel="noopener">peripheries</a>, <a href="https://www.graphviz.org/doc/info/attrs.html#d:width" target="_blank" rel="noopener">width</a> and <a href="https://www.graphviz.org/doc/info/attrs.html#d:height" target="_blank" rel="noopener">height</a> attributes. </p>
+<p>Normally, the size of a node is determined by smallest width and height needed to contain its label and image, if any, with a margin specified by the <a href="https://www.graphviz.org/doc/info/attrs.html#d:margin" target="_blank" rel="noopener">margin</a> attribute. The width and height must also be at least as large as the sizes specified by the <a href="https://www.graphviz.org/doc/info/attrs.html#d:width" target="_blank" rel="noopener">width</a> and <a href="https://www.graphviz.org/doc/info/attrs.html#d:height" target="_blank" rel="noopener">height</a> attributes, which specify the minimum values for these parameters. See the <a href="https://www.graphviz.org/doc/info/attrs.html#d:fixedsize" target="_blank" rel="noopener">fixedsize</a> attribute for ways of restricting the node size. In particular, if fixedsize=shape, the node’s shape will be fixed by the <a href="https://www.graphviz.org/doc/info/attrs.html#d:width" target="_blank" rel="noopener">width</a> and <a href="https://www.graphviz.org/doc/info/attrs.html#d:height" target="_blank" rel="noopener">height</a> attributes, and the shape is used for edge termination, but both the shape and label sizes are used preventing node overlap. For example, the following graph </p>
+<p>digraph G { { node [margin=0 fontcolor=blue fontsize=32 width=0.5 shape=circle style=filled] b [fillcolor=yellow fixedsize=true label=”a very long label”] d [fixedsize=shape label=”an even longer label”] } a -&gt; {c d} b -&gt; {c d} } yields the figure<br><img src="https://www.graphviz.org/doc/info/fixed.gif" alt></p>
+<p>Note that the label of the yellow node, with fixedsize=true, overlaps the other node, where there is sufficient space for the gray node with fixedsize=shape. </p>
+<p>The shapes: note, tab, folder, box3d and component were provided by Pander. The synthetic biology shapes: promoter, cds, terminator, utr, primersite, restrictionsite, fivepoverhang, threepoverhang, noverhang, assembly, signature, insulator, ribosite, rnastab, proteasesite, proteinstab, rpromoter, rarrow, larrow and lpromoter were contributed by Jenny Cheng. </p>
+<h2 id="Record-based-Nodes"><a href="#Record-based-Nodes" class="headerlink" title="Record-based Nodes"></a>Record-based Nodes</h2><p><strong>NOTE:</strong> Please see the note about record-based nodes at the <a href="#top">top</a> of this page. Also note that there are problems using non-trivial edges (edges with ports or labels) between adjacent nodes on the same rank if one or both nodes has a record shape. </p>
+<p>These are specified by shape values of “record” and “Mrecord”. The structure of a record-based node is determined by its <a href="https://www.graphviz.org/doc/info/attrs.html#d:label" target="_blank" rel="noopener">label</a>, which has the following schema: </p>
+<p><em>rlabel</em>=<em>field</em> ( ‘|’ <em>field</em> )* where <em>field</em>=fieldId or ‘{‘ <em>rlabel</em> ‘}’ and <em>fieldId</em>= [ ‘&lt;’ <em>string</em> ‘&gt;’] [ <em>string</em> ] </p>
+<p>Braces, vertical bars and angle brackets must be escaped with a backslash character if you wish them to appear as a literal character. Spaces are interpreted as separators between tokens, so they must be escaped if you want spaces in the text. </p>
+<p>The first string in <em>fieldId</em> assigns a portname to the field and can be combined with the node name to indicate where to attach an edge to the node. (See <a href="https://www.graphviz.org/doc/info/attrs.html#k:portPos" target="_blank" rel="noopener">portPos</a>.) The second string is used as the text for the field; it supports the usual <a href="https://www.graphviz.org/doc/info/attrs.html#k:escString" target="_blank" rel="noopener">escape sequences</a> \n, \l and \r. </p>
+<p>Visually, a record is a box, with fields represented by alternating rows of horizontal or vertical subboxes. The Mrecord shape is identical to a record shape, except that the outermost box has rounded corners. Flipping between horizontal and vertical layouts is done by nesting fields in braces “{…}”. The top-level orientation in a record is horizontal. Thus, a record with label “A | B | C | D” will have 4 fields oriented left to right, while “{A | B | C | D}” will have them from top to bottom and “A | { B | C } | D” will have “B” over “C”, with “A” to the left and “D” to the right of “B” and “C”. </p>
+<p>The initial orientation of a record node depends on the <a href="https://www.graphviz.org/doc/info/attrs.html#d:rankdir" target="_blank" rel="noopener">rankdir</a> attribute. If this attribute is TB (the default) or BT, corresponding to vertical layouts, the top-level fields in a record are displayed horizontally. If, however, this attribute is LR or RL, corresponding to horizontal layouts, the top-level fields are displayed vertically. </p>
+<p>As an example of a record node, the dot input </p>
+<p>digraph structs { node [shape=record]; struct1 [label=” left| mid\ dle| right”]; struct2 [label=” one| two”]; struct3 [label=”hello\nworld |{ b |{c| d|e}| f}| g | h”]; struct1:f1 -&gt; struct2:f0; struct1:f2 -&gt; struct3:here; } yields the figure<br><img src="https://www.graphviz.org/doc/info/record.gif" alt></p>
+<p>If we add the line </p>
+<p>rankdir=LR we get the layout<br><img src="https://www.graphviz.org/doc/info/record2.gif" alt></p>
+<p>If we change node struct1 to have shape Mrecord, it then looks like:<br><img src="https://www.graphviz.org/doc/info/mrecord.gif" alt></p>
+<h2 id="Styles-for-Nodes"><a href="#Styles-for-Nodes" class="headerlink" title="Styles for Nodes"></a>Styles for Nodes</h2><p>The <a href="https://www.graphviz.org/doc/info/attrs.html#d:style" target="_blank" rel="noopener">style</a> attribute can be used to modify the appearance of a node. At present, there are 8 style values recognized: filled, invisible, diagonals, rounded. dashed, dotted, solid and bold. As usual, the value of the <a href="https://www.graphviz.org/doc/info/attrs.html#d:style" target="_blank" rel="noopener">style</a> attribute can be a comma-separated list of any of these. If the style contains conflicts (e.g, style=”dotted, solid”), the last attribute wins. </p>
+<ul>
+<li>filled<br>This value indicates that the node’s interior should be filled. The color used is the node’s fillcolor or, if that’s not defined, its color. For unfilled nodes, the interior of the node is transparent to whatever color is the current graph or cluster background color. Note that point shapes are always filled. </li>
+</ul>
+<p>Thus, the code </p>
+<p>digraph G { rankdir=LR node [shape=box, color=blue] node1 [style=filled] node2 [style=filled, fillcolor=red] node0 -&gt; node1 -&gt; node2 } yields the figure<br><img src="https://www.graphviz.org/doc/info/fill.gif" alt></p>
+<ul>
+<li>invisible<br>Setting this style causes the node not to be displayed at all. Note that the node is still used in laying out the graph. - diagonals<br>The diagonals style causes small chords to be drawn near the vertices of the node’s polygon or, in case of circles and ellipses, two chords near the top and the bottom of the shape. The special node shapes <a href="#d:Msquare">Msquare</a>, <a href="#d:Mcircle">Mcircle</a>, and <a href="#d:Mdiamond">Mdiamond</a> are simply an ordinary square, circle and diamond with the diagonals style set. - rounded<br>The rounded style causes the polygonal corners to be smoothed. Note that this style also applies to record-based nodes. Indeed, the Mrecord shape is simply shorthand for setting this style. Also, prior to 26 April 2005, the rounded and filled styles were mutually exclusive. </li>
+</ul>
+<p>As an example of rounding, dot uses the graph </p>
+<p>digraph R { rankdir=LR node [style=rounded] node1 [shape=box] node2 [fillcolor=yellow, style=”rounded,filled”, shape=diamond] node3 [shape=record, label=”{ a | b | c }”] node1 -&gt; node2 -&gt; node3 } to produce the figure<br><img src="https://www.graphviz.org/doc/info/round.gif" alt></p>
+<ul>
+<li>dashed<br>This style causes the node’s border to be drawn as a dashed line. - dotted<br>This style causes the node’s border to be drawn as a dotted line. - solid<br>This style causes the node’s border to be drawn as a solid line, which is the default. - bold<br>This style causes the node’s border to be drawn as a bold line. See also <a href="https://www.graphviz.org/doc/info/attrs.html#d:penwidth" target="_blank" rel="noopener">penwidth</a>.<br>Additional styles may be available with a specific code generator. </li>
+</ul>
+<h2 id="HTML-Like-Labels"><a href="#HTML-Like-Labels" class="headerlink" title="HTML-Like Labels"></a>HTML-Like Labels</h2><p><strong>NOTE:</strong><em>This feature is only available on versions of Graphviz that are newer than mid-November 2003. In particular, it is not part of release 1.10.</em><strong>NOTE:</strong><em>The font markups for bold, italic, underlining, subscript and superscript</em>(<b>, <i>, <u>, <sub> and <sup>) <em>are only available in versions after 14 October 2011, and the markup for strike-through (<s>) requires versions later than 15 September 2013. In addition, all of these markups are currently only available via the cairo and svg renderers. The horizontal and vertical rules</s></em>(<hr> and <vr>) <em>are only available in versions later than 8 July 2011.</em></vr></sup></sub></u></i></b></p>
+<p><strong>NOTE:</strong>_For releases later than 9 September 2014, one can use_shape=plain_so that the size of the node is totally determined by the label. Otherwise, the node’s margin, width and height values may cause the node to be larger, so that edges are clipped away from the label. In effect,_shape=plain_is shorthand for_shape=none width=0 height=0 margin=0. </p>
+<p>If the value of a label attribute (<a href="https://www.graphviz.org/doc/info/attrs.html#d:label" target="_blank" rel="noopener">label</a> for nodes, edges, clusters, and graphs, and the <a href="https://www.graphviz.org/doc/info/attrs.html#d:headlabel" target="_blank" rel="noopener">headlabel</a> and <a href="https://www.graphviz.org/doc/info/attrs.html#d:taillabel" target="_blank" rel="noopener">taillabel</a> attributes of an edge) is given as an <a href="https://www.graphviz.org/doc/info/lang.html#html" target="_blank" rel="noopener">HTML string</a>, that is, delimited by &lt;…&gt; rather than “…”, the label is interpreted as an HTML description. At their simplest, such labels can describe multiple lines of variously aligned text as provided by ordinary <a href="https://www.graphviz.org/doc/info/attrs.html#k:escString" target="_blank" rel="noopener">string labels</a>. More generally, the label can specify a table similar to those provided by HTML, with different graphical attributes at each level. </p>
+<p>As <a href="https://www.graphviz.org/doc/info/lang.html#html" target="_blank" rel="noopener">HTML strings</a> are processed like HTML input, any use of the “, &amp;, &lt;, and &gt; characters in literal text or in attribute values need to be replaced by the corresponding escape sequence. For example, if you want to use &amp; in an href value, this should be represented as &amp;. </p>
+<p><strong>NOTE:</strong> The features and syntax supported by these labels are modeled on HTML. However, there are many aspects that are relevant to Graphviz labels that are not in HTML and, conversely, HTML allows various constructs which are meaningless in Graphviz. We will generally refer to these labels as “HTML labels” rather than the cumbersome “HTML-like labels” but the reader is warned that these are not really HTML. The grammar below describes precisely what Graphviz will accept. </p>
+<p>Although HTML labels are not, strictly speaking, a shape, they can be viewed as a generalization of the record shapes described above. In particular, if a node has set its <a href="https://www.graphviz.org/doc/info/attrs.html#k:shape" target="_blank" rel="noopener">shape</a> attribute to none or plaintext, the HTML label will be the node’s shape. On the other hand, if the node has any other shape (except point), the HTML label will be embedded within the node the same way an ordinary label would be. </p>
+<p>The following is an abstract grammar for HTML labels. Terminals, corresponding to elements, are shown in bold font, and nonterminals in italics. Square brackets [ and ] enclose optional items. Vertical bars | separate alternatives. Note that, as in HTML, element and attribute names are case-insensitive. (cf. sections 3.2.1 and 3.2.2 of the <a href="http://www.w3.org/TR/html401" target="_blank" rel="noopener">HTML 4.01 specification</a>). </p>
+<p><em>label</em> : <em>text</em> | <em>fonttable__text</em> : <em>textitem</em> | <em>text__textitem__textitem</em> : <em>string</em> | <strong><br></strong> | <strong><font></font></strong><em>text</em><strong></strong> | <strong><i></i></strong><em>text</em><strong></strong> | <strong><b></b></strong><em>text</em><strong></strong> | <strong><u></u></strong><em>text</em><strong></strong> | <strong><o></o></strong><em>text</em><strong></strong> | <strong><sub></sub></strong><em>text</em><strong></strong> | <strong><sup></sup></strong><em>text</em><strong></strong> | <strong><s></s></strong><em>text</em><strong></strong><em>fonttable</em> : <em>table</em> | <strong><font></font></strong><em>table</em><strong></strong> | <strong><i></i></strong><em>table</em><strong></strong> | <strong><b></b></strong><em>table</em><strong></strong> | <strong><u></u></strong><em>table</em><strong></strong> | <strong><o></o></strong><em>table</em><strong></strong><em>table</em> : <strong><table></table></strong><em>rows</em><strong></strong><em>rows</em> : <em>row</em> | <em>rows__row</em> | <em>rows</em><strong><hr></strong><em>row__row</em> : <strong><tr></tr></strong><em>cells</em><strong></strong><em>cells</em> : <em>cell</em> | <em>cells__cell</em> | <em>cells</em><strong><vr></vr></strong><em>cell__cell</em> : <strong><td></td></strong><em>label</em><strong></strong> | <strong><td>**</td></strong><img><strong>**</strong></p>
+<p>All non-printing characters such as tabs or newlines are ignored. Above, a <em>string</em> is any collection of printable characters, including spaces. For tables, outside of the body of a <td> element, whitespace characters are ignored, including spaces; within a </td><td> element, spaces are preserved but all other white space characters are discarded. <strong>N.B.</strong> For technical reasons, if a table is wrapped in a font element such as <font> or <b>, any space immediately before or after this will cause a syntax error. For example, the label </b></font></td></p>
+<pre><code>&lt; &lt;U&gt;&lt;TABLE&gt;&lt;TR&gt;&lt;TD&gt;a&lt;/TD&gt;&lt;/TR&gt;&lt;/U&gt;&gt;</code></pre><p>is not legal. Removing either the space or the <u>…</u> will fix this. </p>
+<p>HTML comments are allowed within an HTML string. They can occur anywhere provided that, if they contain part of an HTML element, they must contain the entire element. </p>
+<p>As is obvious from the above description, the interpretation of white space characters is one place where HTML-like labels is very different from standard HTML. In HTML, any sequence of white space characters is collapsed to a single space, If the user does not want this to happen, the input must use non-breaking spaces “ “. This makes sense in HTML, where text layout depends dynamically on the space available. In Graphviz, the layout is statically determined by the input, so it is reasonable to treat ordinary space characters as non-breaking. In addition, ignoring tabs and newlines allows the input text to be formatted for easier reading. </p>
+<p>Each of the HTML elements has a set of optional attributes. Attribute values must appear in double quotes. </p>
+<!-- Table element --> 
+
+<pre><code>&lt;TABLE
+  ALIGN=&quot;CENTER|LEFT|RIGHT&quot;
+  BGCOLOR=&quot;_color_&quot;
+  BORDER=&quot;_value_&quot;
+  CELLBORDER=&quot;_value_&quot;
+  CELLPADDING=&quot;_value_&quot;
+  CELLSPACING=&quot;_value_&quot;
+  COLOR=&quot;_color_&quot;
+  COLUMNS=&quot;_value_&quot;
+  FIXEDSIZE=&quot;FALSE|TRUE&quot;
+  GRADIENTANGLE=&quot;_value_&quot;
+  HEIGHT=&quot;_value_&quot;
+  HREF=&quot;_value_&quot;
+  ID=&quot;_value_&quot;
+  PORT=&quot;_portName_&quot;
+  ROWS=&quot;_value_&quot;
+  SIDES=&quot;_value_&quot;
+  STYLE=&quot;_value_&quot;
+  TARGET=&quot;_value_&quot;
+  TITLE=&quot;_value_&quot;
+  TOOLTIP=&quot;_value_&quot;
+  VALIGN=&quot;MIDDLE|BOTTOM|TOP&quot;
+  WIDTH=&quot;_value_&quot;
+&gt;</code></pre><!-- Table row --> 
+
+<pre><code>&lt;TR
+  &lt;!-- No attributes --&gt;
+&gt;</code></pre><!-- Table cell --> 
+
+<pre><code>&lt;TD
+  ALIGN=&quot;CENTER|LEFT|RIGHT|TEXT&quot;
+  BALIGN=&quot;CENTER|LEFT|RIGHT&quot;
+  BGCOLOR=&quot;_color_&quot;
+  BORDER=&quot;_value_&quot;
+  CELLPADDING=&quot;_value_&quot;
+  CELLSPACING=&quot;_value_&quot;
+  COLOR=&quot;_color_&quot;
+  COLSPAN=&quot;_value_&quot;
+  FIXEDSIZE=&quot;FALSE|TRUE&quot;
+  GRADIENTANGLE=&quot;_value_&quot;
+  HEIGHT=&quot;_value_&quot;
+  HREF=&quot;_value_&quot;
+  ID=&quot;_value_&quot;
+  PORT=&quot;_portName_&quot;
+  ROWSPAN=&quot;_value_&quot;
+  SIDES=&quot;_value_&quot;
+  STYLE=&quot;_value_&quot;
+  TARGET=&quot;_value_&quot;
+  TITLE=&quot;_value_&quot;
+  TOOLTIP=&quot;_value_&quot;
+  VALIGN=&quot;MIDDLE|BOTTOM|TOP&quot;
+  WIDTH=&quot;_value_&quot;
+&gt;</code></pre><!-- Font specification --> 
+
+<pre><code>&lt;FONT
+  COLOR=&quot;_color_&quot;
+  FACE=&quot;_fontname_&quot;
+  POINT-SIZE=&quot;_value_&quot;
+&gt;</code></pre><!-- Line break --> 
+
+<pre><code>&lt;BR
+  ALIGN=&quot;CENTER|LEFT|RIGHT&quot;
+/&gt;</code></pre><!-- Image inclusion --> 
+
+<pre><code>&lt;IMG
+  SCALE=&quot;FALSE|TRUE|WIDTH|HEIGHT|BOTH&quot;
+  SRC=&quot;_value_&quot;
+/&gt;</code></pre><!-- Italic style --> 
+
+<pre><code>&lt;I
+  &lt;!-- No attributes --&gt;
+&gt;</code></pre><!-- Bold style --> 
+
+<pre><code>&lt;B
+  &lt;!-- No attributes --&gt;
+&gt;</code></pre><!-- Underline text --> 
+
+<pre><code>&lt;U
+  &lt;!-- No attributes --&gt;
+&gt;</code></pre><!-- Overline text --> 
+
+<pre><code>&lt;O
+  &lt;!-- No attributes --&gt;
+&gt;</code></pre><!-- Subscript text --> 
+
+<pre><code>&lt;SUB
+  &lt;!-- No attributes --&gt;
+&gt;</code></pre><!-- Superscript text --> 
+
+<pre><code>&lt;SUP
+  &lt;!-- No attributes --&gt;
+&gt;</code></pre><!-- Strike-through text --> 
+
+<pre><code>&lt;S
+  &lt;!-- No attributes --&gt;
+&gt;</code></pre><!-- Horizontal rule --> 
+
+<pre><code>&lt;HR
+  &lt;!-- No attributes --&gt;
+/&gt;</code></pre><!-- Vertical rule --> 
+
+<pre><code>&lt;VR
+  &lt;!-- No attributes --&gt;
+/&gt;</code></pre><p><strong><em>ALIGN</em></strong></p>
+<blockquote>
+<p>specifies horizontal placement. When an object is allocated more space than required, this value determines where the extra space is placed left and right of the object. </p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>CENTER aligns the object in the center. (Default)</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>LEFT aligns the object on the left.</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>RIGHT aligns the object on the right.</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>(&gt; <td>&gt;  only) TEXT aligns lines of text using the full cell width. The alignment of a line is determined by its (possibly implicit) associated &gt; <br>&gt;  element.</td></p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>The contents of a cell are normally aligned as a block. In particular, lines of text are first aligned as a text block based on the width of the widest line and the corresponding &gt; <br>&gt;  elements. Then, the entire text block is aligned within a cell. If, however, the cell’s <strong><em>&gt; ALIGN</em></strong>&gt;  value is &gt; “TEXT”&gt; , and the cell contains lines of text, then the lines are justified using the entire available width of the cell. If the cell does not contain text, then the contained image or table is centered. </p>
+</blockquote>
+<p><strong><em>BALIGN</em></strong>&gt;  specifies the default alignment of &gt; <br>&gt;  elements contained in the cell. That is, if a &gt; <br>&gt;  element has no explicit <strong><em>&gt; ALIGN</em></strong>&gt;  attribute, the attribute value is specified by the value of <strong><em>&gt; BALIGN</em></strong>&gt; . <strong><em>BGCOLOR=”color”</em></strong>&gt;  sets the color of the background. This color can be overridden by a <strong><em>&gt; BGCOLOR</em></strong>&gt;  attribute in descendents. The value can be a single color or two colors separated by a colon, the latter indicating a gradient fill. <strong><em>BORDER=”value”</em></strong>&gt;  specifies the width of the border around the object in points. A value of zero indicates no border. The default is 1. The maximum value is 255. If set in a table, and <strong><em>&gt; CELLBORDER</em></strong>&gt;  is not set, this value is also used for all cells in the table. It can be overridden by a <strong><em>&gt; BORDER</em></strong>&gt;  tag in a cell. <strong><em>CELLBORDER=”value”</em></strong>&gt;  specifies the width of the border for all cells in a table. It can be overridden by a <strong><em>&gt; BORDER</em></strong>&gt;  tag in a cell. The maximum value is 255. <strong><em>CELLPADDING=”value”</em></strong>&gt;  specifies the space, in points, between a cell’s border and its content. The default is 2. The maximum value is 255. <strong><em>CELLSPACING=”value”</em></strong>&gt;  specifies the space, in points, between cells in a table and between a cell and the table’s border. The default is 2. The maximum value is 127. <strong><em>COLOR=”color”</em></strong>&gt;  sets the color of the font within the scope of <font>…</font>, or the border color of the table or cell within the scope of <table>…</table>, or <td>…</td>. This color can be overridden by a <strong><em>&gt; COLOR</em></strong>&gt;  attribute in descendents. By default, the font color is determined by the <a href="https://www.graphviz.org/doc/info/attrs.html#d:fontcolor" target="_blank" rel="noopener">&gt; fontcolor</a>&gt;  attribute of the corresponding node, edge or graph, and the border color is determined by the <a href="https://www.graphviz.org/doc/info/attrs.html#d:color" target="_blank" rel="noopener">&gt; color</a>&gt;  attribute of the corresponding node, edge or graph. <strong><em>COLSPAN=”value”</em></strong>&gt;  specifies the number of columns spanned by the cell. The default is 1. The maximum value is 65535. <strong><em>COLUMNS=”value”</em></strong>&gt;  provides general formatting information concerning the columns. At present, the only legal value is “*”, which causes a vertical rule to appear between every cell in every row. <strong><em>FACE=”fontname”</em></strong>&gt;  specifies the font to use within the scope of <font>…</font>. This can be overridden by a <strong><em>&gt; FACE</em></strong>&gt;  attribute in descendents. By default, the font name is determined by the <a href="https://www.graphviz.org/doc/info/attrs.html#d:fontname" target="_blank" rel="noopener">&gt; fontname</a>&gt;  attribute of the corresponding node, edge or graph. <strong><em>FIXEDSIZE</em></strong>&gt;  specifies whether the values given by the <strong><em>&gt; WIDTH</em></strong>&gt;  and <strong><em>&gt; HEIGHT</em></strong>&gt;  attributes are enforced. </p>
+<ul>
+<li><blockquote>
+<p>FALSE allows the object to grow so that all its contents will fit. (Default)</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>TRUE fixes the object size to its given <strong><em>&gt; WIDTH</em></strong>&gt;  and <strong><em>&gt; HEIGHT</em></strong>&gt; . Both of these attributes must be supplied.</p>
+</blockquote>
+</li>
+</ul>
+<p><strong><em>GRADIENTANGLE=”value”</em></strong>&gt;  gives the angle used in a gradient fill if the <strong><em>&gt; BGCOLOR</em></strong>&gt;  is a color list. For the default linear gradient, this specifies the angle of a line through the center along which the colors transform. Thus, an angle of 0 will cause a left-to-right progression. For radial gradients (see <strong><em>&gt; STYLE</em></strong>&gt; ), the angle specifies the position of the center of the coloring. An angle of 0 places the center at the center of the table or cell; an non-zero angle places the fill center along that angle near the boundary. <strong><em>HEIGHT=”value”</em></strong>&gt;  specifies the mininum height, in points, of the object. The height includes the contents, any spacing and the border. Unless <strong><em>&gt; FIXEDSIZE</em></strong>&gt;  is true, the height will be expanded to allow the contents to fit. The maximum value is 65535. <strong><em>HREF=”value”</em></strong>&gt;  attaches a URL to the object. Note that the &gt; “value”&gt;  is treated as an <a href="https://www.graphviz.org/doc/info/attrs.html#k:escString" target="_blank" rel="noopener">&gt; escString</a>&gt;  similarly to the <a href="https://www.graphviz.org/doc/info/attrs.html#d:URL" target="_blank" rel="noopener">&gt; URL</a>&gt;  attribute. <strong><em>ID=”value”</em></strong>&gt;  allows the user to specify a unique ID for a table or cell. See the <a href="https://www.graphviz.org/doc/info/attrs.html#d:id" target="_blank" rel="noopener">&gt; id</a>&gt;  attribute for more information. Note that the &gt; “value”&gt;  is treated as an <a href="https://www.graphviz.org/doc/info/attrs.html#k:escString" target="_blank" rel="noopener">&gt; escString</a>&gt;  similarly to the <a href="https://www.graphviz.org/doc/info/attrs.html#d:id" target="_blank" rel="noopener">&gt; id</a>&gt;  attribute. <strong><em>POINT-SIZE=”value”</em></strong>&gt;  sets the size of the font, in points, used within the scope of <font>…</font>. This can be overridden by a <strong><em>&gt; POINT-SIZE</em></strong>&gt;  attribute in descendents. By default, the font size is determined by the <a href="https://www.graphviz.org/doc/info/attrs.html#d:fontsize" target="_blank" rel="noopener">&gt; fontsize</a>&gt;  attribute of the corresponding node, edge or graph. <strong><em>PORT=”value”</em></strong>&gt;  attaches a portname to the object. (See <a href="https://www.graphviz.org/doc/info/attrs.html#k:portPos" target="_blank" rel="noopener">&gt; portPos</a>&gt; .) This can be used to modify the head or tail of an edge, so that the end attaches directly to the object. <strong><em>ROWS=”value”</em></strong>&gt;  provides general formatting information concerning the rows. At present, the only legal value is “*”, which causes a horizontal rule to appear between every row. <strong><em>ROWSPAN=”value”</em></strong>&gt;  specifies the number of rows spanned by the cell. The default is 1. The maximum value is 65535. <strong><em>SCALE</em></strong>&gt;  specifies how an image will use any extra space available in its cell. Allowed values are </p>
+<ul>
+<li><blockquote>
+<p>FALSE : keep image its natural size. (Default)</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>TRUE : scale image uniformly to fit.</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>WIDTH : expand image width to fill</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>HEIGHT : expand image height to fill</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>BOTH : expand both image width height to fill</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>If this attribute is undefined, the image inherits the <a href="https://www.graphviz.org/doc/info/attrs.html#d:imagescale" target="_blank" rel="noopener">&gt; imagescale</a>&gt;  attribute of the graph object being drawn. As with the <a href="https://www.graphviz.org/doc/info/attrs.html#d:imagescale" target="_blank" rel="noopener">&gt; imagescale</a>&gt;  attribute, if the cell has a fixed size and the image is too large, any offending dimension will be shrunk to fit the space, the scaling being uniform in width and height if <em>&gt; SCALE=&gt; “true”</em>&gt; . Note that the containing cell’s <strong><em>&gt; ALIGN</em></strong>&gt;  and <strong><em>&gt; VALIGN</em></strong>&gt;  attributes override an image’s <strong><em>&gt; SCALE</em></strong>&gt;  attribute. <strong><em>SIDES=”value”</em></strong>&gt;  specifies which sides of a border in a cell or table should be drawn, if a border is drawn. By default, all sides are drawn. The &gt; “value”&gt;  string can contain any collection of the (case-insensitive) characters &gt; ‘L’&gt; , &gt; ‘T’&gt; , &gt; ‘R’&gt; , or &gt; ‘B’&gt; , corresponding to the left, top, right and, bottom sides of the border, respectively. For example, &gt; SIDES=”LB”&gt;  would indicate only the left and bottom segments of the border should be drawn. <strong><em>SRC=”value”</em></strong>&gt;  specifies the image file to be displayed in the cell. Note that if the software is used as a web server, file system access to images is more restricted. See <a href="https://www.graphviz.org/doc/info/command.html#d:GV_FILE_PATH" target="_blank" rel="noopener">&gt; GV_FILE_PATH</a>&gt;  and <a href="https://www.graphviz.org/doc/info/command.html#d:SERVER_NAME" target="_blank" rel="noopener">&gt; SERVER_NAME</a>&gt; . <strong><em>STYLE</em></strong></p>
+</blockquote>
+<blockquote>
+<p>specifies style characteristics of the table or cell. Style characteristics are given as a comma or space separated list of style attributes. At present, the only legal attributes are “ROUNDED” and “RADIAL” for tables, and “RADIAL” for cells. If “ROUNDED” is specified, the table will have rounded corners. This probably works best if the outmost cells have no borders, or their CELLSPACING is sufficiently large. If it is desirable to have borders around the cells, use <em><strong>&gt; HR</strong></em>&gt;  and <em><strong>&gt; VR</strong></em>&gt;  elements, or the <em><strong>&gt; COLUMNS</strong></em>&gt;  and <em><strong>&gt; ROWS</strong></em>&gt;  attributes of <em><strong>&gt; TABLE</strong></em>&gt; . </p>
+</blockquote>
+<blockquote>
+<p>The “RADIAL” attribute indicates a radial gradient fill. See the <strong><em>&gt; BGCOLOR</em></strong>&gt;  and <strong><em>&gt; GRADIENTANGLE</em></strong>&gt;  attributes. </p>
+</blockquote>
+<p><strong><em>TARGET=”value”</em></strong>&gt;  determines which window of the browser is used for the URL if the object has one. See <a href="http://www.w3.org/TR/html401/present/frames.html#adef-target" target="_blank" rel="noopener">&gt; W3C documentation</a>&gt; . Note that the &gt; “value”&gt;  is treated as an <a href="https://www.graphviz.org/doc/info/attrs.html#k:escString" target="_blank" rel="noopener">&gt; escString</a>&gt;  similarly to the <a href="https://www.graphviz.org/doc/info/attrs.html#d:target" target="_blank" rel="noopener">&gt; target</a>&gt;  attribute. <strong><em>TITLE=”value”</em></strong>&gt;  sets the tooltip annotation attached to the element. This is used only if the element has a HREF attribute. Note that the &gt; “value”&gt;  is treated as an <a href="https://www.graphviz.org/doc/info/attrs.html#k:escString" target="_blank" rel="noopener">&gt; escString</a>&gt;  similarly to the <a href="https://www.graphviz.org/doc/info/attrs.html#d:tooltip" target="_blank" rel="noopener">&gt; tooltip</a>&gt;  attribute. <strong><em>TOOLTIP=”value”</em></strong>&gt;  is an alias for <strong><em>&gt; TITLE</em></strong>&gt; . <strong><em>VALIGN</em></strong></p>
+<blockquote>
+<p>specifies vertical placement. When an object is allocated more space than required, this value determines where the extra space is placed above and below the object. </p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>MIDDLE aligns the object in the center. (Default)</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>BOTTOM aligns the object on the bottom.</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>TOP aligns the object on the top.</p>
+</blockquote>
+</li>
+</ul>
+<p><strong><em>WIDTH=”value”</em></strong>&gt;  specifies the mininum width, in points, of the object. The width includes the contents, any spacing and the border. Unless <strong><em>&gt; FIXEDSIZE</em></strong>&gt;  is true, the width will be expanded to allow the contents to fit. The maximum value is 65535. There is some inheritance among the attributes. If a table specifies a <em><strong>CELLPADDING</strong></em>, <em><strong>CELLBORDER</strong></em> or <em><strong>BORDER</strong></em> value, this value is used by the table’s cells unless overridden. If a cell or table specifies a <em><strong>BGCOLOR</strong></em>, this will be the background color for all of its descendents. Of course, if a background or fill color is specified for the graph object owning the label, this will be the original background for the label. The object’s fontname, fontcolor and fontsize attributes are the default for drawing text. These can be overridden by using <em><strong>FONT</strong></em> to set new values. The new font values will hold until overridden by an enclosed <em><strong>FONT</strong></em> element. Finally, the pencolor or color of the graph object will be used as the border color. </p>
+<p>If you want horizontal or vertical rules used uniformly within a table, consider using the <em><strong>COLUMNS</strong></em> or <em><strong>ROWS</strong></em> attributes rather than using many <em><strong>HR</strong></em> and <em><strong>VR</strong></em> elements. </p>
+<p>Because of certain limitations in handling tables in a device-independent manner, when <em><strong>BORDER</strong></em> is 1 and both table and cell borders are on and <em><strong>CELLSPACING</strong></em> is less than 2, anomalies can arise in the output, such as gaps between sides of borders which should be abutting or even collinear. The user can usual get around this by increasing the border size or the spacing, or turning off the table border. </p>
+<p>As an example of HTML labels, the dot input </p>
+<p>digraph structs { node [shape=plaintext] struct1 [label=&lt; </p>
+<p>leftmid dleright </p>
+<blockquote>
+<p>]; struct2 [label=&lt; </p>
+</blockquote>
+<p>onetwo </p>
+<blockquote>
+<p>]; struct3 [label=&lt; </p>
+</blockquote>
+<p>hello<br>world b g h cde f </p>
+<blockquote>
+<p>]; struct1:f1 -&gt; struct2:f0; struct1:f2 -&gt; struct3:here; } produces the HTML analogue of the record example above<br><img src="https://www.graphviz.org/doc/info/html1.gif" alt></p>
+</blockquote>
+<p>As usual, an HTML specification is more verbose. On the other hand, HTML labels are much more general, as the following example shows: </p>
+<p><img src="https://www.graphviz.org/doc/info/html2.gif" alt></p>
+<p>The source for this graph can be found <a href="https://www.graphviz.org/doc/info/html2.gv" target="_blank" rel="noopener">here</a>. </p>
+<p>Here is an example using <font> elements </font></p>
+<p><img src="https://www.graphviz.org/doc/info/html3.gif" alt></p>
+<p>with the <a href="https://www.graphviz.org/doc/info/html3.gv" target="_blank" rel="noopener">input graph</a>. </p>
+<p>Here is an example using an <img> element </p>
+<p><img src="https://www.graphviz.org/doc/info/html4.gif" alt></p>
+<p>with the <a href="https://www.graphviz.org/doc/info/html4.gv" target="_blank" rel="noopener">input graph</a>. </p>
+<p>The sides attribute (version 2.37 and later) allows one to combine cells to form various non-convex shapes. For example, a tee-shaped node </p>
+<p><img src="https://www.graphviz.org/doc/info/tee.gif" alt></p>
+<p>can be produced using </p>
+<p>tee [shape=none margin=0 label= &lt;</p>
+<blockquote>
+<p>] ## User-defined Nodes</p>
+</blockquote>
+<p>There is a third type of node shape which is specified by the user. Typically, these shapes rely on the details of a concrete graphics format. At present, shapes can be described using PostScript, via a file or add-on library, for use in PostScript output, or shapes can be specified by a bitmap-image file for use with SVG or bitmap (jpeg, gif, etc.) output. More information can be found on the page <a href="https://www.graphviz.org/faq/#FaqCustShape" target="_blank" rel="noopener">How to create custom shapes</a>. </p>
+<h2 id="SDL-Shapes-for-PostScript"><a href="#SDL-Shapes-for-PostScript" class="headerlink" title="SDL Shapes for PostScript"></a>SDL Shapes for PostScript</h2><p>One example of user-defined node shapes is provided by Mark Rison of CSR. These are the <a href="http://www.sdl-forum.org/SDL/index.htm" target="_blank" rel="noopener">SDL</a> shapes. These are available as PostScript functions whose use is described in <a href="https://www.graphviz.org/faq/#ext_ps_proc" target="_blank" rel="noopener">External PostScript procedures</a>. The necessary PostScript library file and sample use can be found in the contrib/sdlshapes directory in the release. Please note the COPYRIGHT AND PERMISSION NOTICE contained in the library file sdl.ps. </p>
+<p>The table below gives the shape names and the corresponding node shapes. </p>
+<p><img src="https://www.graphviz.org/doc/info/sdlshapes.jpg" alt></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">graphviz dot</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/08/Graphviz-node-shapes/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Graphviz-dot-language-spec" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1214,196 +1624,6 @@ white-space: pre;
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/08/23/JavaScript-function-vs-Function/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-http-cache-control" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/23/http-cache-control/">http cache control</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/23/http-cache-control/" class="archive-article-date">
-  	<time datetime="2019-08-23T04:50:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>面向站长和网站管理员的Web缓存加速指南[翻译]</p>
-<p>原文（英文）地址： <a href="http://www.mnot.net/cache_docs/" target="_blank" rel="noopener">http://www.mnot.net/cache_docs/</a>  版权声明：署名-非商业性使用-禁止演绎 2.0</p>
-<p>这是一篇知识性的文档，主要目的是为了让Web缓存相关概念更容易被开发者理解并应用于实际的应用环境中。为了简要起见，某些实现方面的细节被简化或省略了。如果你更关心细节实现则完全不必耐心看完本文，后面参考文档和更多深入阅读部分可能是你更需要的内容。</p>
-<p>什么是Web缓存，为什么要使用它？<br>缓存的类型：<br>浏览器缓存；<br>代理服务器缓存；<br>Web缓存无害吗？为什么要鼓励缓存？<br>Web缓存如何工作：<br>如何控制（控制不）缓存：<br>HTML Meta标签 vs. HTTP头信息；<br>Pragma HTTP头信息（为什么不起作用）；<br>使用Expires（过期时间）HTTP头信息控制保鲜期；<br>Cache-Control（缓存控制） HTTP头信息；<br>校验参数和校验；<br>创建利于缓存网站的窍门；<br>编写利于缓存的脚本；<br>常见问题解答；<br>缓存机制的实现：Web服务器端配置；<br>缓存机制的实现：服务器端脚本；<br>参考文档和深入阅读；<br>关于本文档；</p>
-<h1 id="什么是Web缓存，为什么要使用它？"><a href="#什么是Web缓存，为什么要使用它？" class="headerlink" title="什么是Web缓存，为什么要使用它？"></a>什么是Web缓存，为什么要使用它？</h1><p>Web缓存位于Web服务器之间（1个或多个，内容源服务器）和客户端之间（1个或多个）：缓存会根据进来的请求保存输出内容的副本，例如html页面， 图片，文件（统称为副本），然后，当下一个请求来到的时候：如果是相同的URL，缓存直接使用副本响应访问请求，而不是向源服务器再次发送请求。</p>
-<p>使用缓存主要有2大理由：<br>减少相应延迟：因为请求从缓存服务器（离客户端更近）而不是源服务器被相应，这个过程耗时更少，让web服务器看上去相应更快；<br>减少网络带宽消耗：当副本被重用时会减低客户端的带宽消耗；客户可以节省带宽费用，控制带宽的需求的增长并更易于管理。<br>缓存的类型<br>浏览器缓存<br>对于新一代的Web浏览器来说（例如：IE，Firefox）：一般都能在设置对话框中发现关于缓存的设置，通过在你的电脑上僻处一块硬盘空间用于存储你已经看过的网站的副本。浏览器缓存根据非常简单的规则进行工作：在同一个会话过程中（在当前浏览器没有被关闭之前）会检查一次并确定缓存的副本足够新。这个缓存对于用户点击“后退”或者点击刚访问过的链接特别有用，如果你浏览过程中访问到同一个图片，这些图片可以从浏览器缓存中调出而即时显现。</p>
-<h1 id="代理服务器缓存"><a href="#代理服务器缓存" class="headerlink" title="代理服务器缓存"></a>代理服务器缓存</h1><p>Web代理服务器使用同样的缓存原理，只是规模更大。代理服务器群为成百上千用户服务使用同样的机制；大公司和ISP经常在他们的防火墙上架设代理缓存或者单独的缓存设备；</p>
-<p>由于带路服务器缓存并非客户端或者源服务器的一部分，而是位于原网络之外，请求必须路由到他们才能起作用。一个方法是手工设置你的浏览器：告诉浏览器使用 那个代理，另外一个是通过中间服务器：这个中间服务器处理所有的web请求，并将请求转发到后台网络，而用户不必配置代理，甚至不必知道代理的存在；</p>
-<p>代理服务器缓存：是一个共享缓存，不只为一个用户服务，经常为大量用户使用，因此在减少相应时间和带宽使用方面很有效：因为同一个副本会被重用多次。<br>网关缓存<br>也被称为反向代理缓存或间接代理缓存，网关缓存也是一个中间服务器，和内网管理员部署缓存用于节省带宽不同：网关缓存一般是网站管理员自己部署：让他们的网站更容易扩展并获得更好的性能；<br>请求有几种方法被路由到网关缓存服务器上：其中典型的是让用一台或多台负载均衡服务器从客户端看上去是源服务器；</p>
-<p>网络内容发布商  (Content delivery networks CDNs)分布网关缓存到整个（或部分）互联网上，并出售缓存服务给需要的网站，Speedera和Akamai就是典型的网络内容发布商(下文简称CDN)。</p>
-<p>本问主要关注于浏览器和代理缓存，当然，有些信息对于网关缓存也同样有效；</p>
-<h1 id="Web缓存无害吗？为什么要鼓励缓存？"><a href="#Web缓存无害吗？为什么要鼓励缓存？" class="headerlink" title="Web缓存无害吗？为什么要鼓励缓存？"></a>Web缓存无害吗？为什么要鼓励缓存？</h1><p>Web缓存在互联网上最容易被误解的技术之一：网站管理员经常怕对网站失去控制，由于代理缓存会“隐藏”他们的用户，让他们感觉难以监控谁在使用他们的网站。<br>不幸的是：就算不考虑Web缓存，互联网上也有很多网站使用非常多的参数以便管理员精确地跟踪用户如何使用他们的网站；如果这类问题也是你关心的，本文将告诉你如何获得精确的统计而不必将网站设计的非常缓存不友好。<br>另外一个抱怨是缓存会给用户过期或失效的数据；无论如何：本文可以告诉你怎样配置你的服务器来控制你的内容将被如何缓存。</p>
-<p>CDN是另外一个有趣的方向，和其他代理缓存不同：CDN的网关缓存为希望被缓存的网站服务，没有以上顾虑。即使你使用了CDN，你也要考虑后续的代理服务器缓存和浏览器缓存问题。</p>
-<p>另外一方面：如果良好地规划了你的网站，缓存会有助于网站服务更快，并节省服务器负载和互联网的链接请求。这个改善是显著的：一个难以缓存的网站可能需要几秒去载入页面，而对比有缓存的网站页面几乎是即时显现：用户更喜欢速度快的网站并更经常的访问；</p>
-<p>这样想：很多大型互联网公司为全世界服务器群投入上百万资金，为的就是让用户访问尽可能快，客户端缓存也是这个目的，只不过更靠近用户一端，而且最好的一点是你甚至根本不用为此付费。</p>
-<p>事实上，无论你是否喜欢，代理服务器和浏览器都回启用缓存。如果你没有配置网站正确的缓存，他们会按照缺省或者缓存管理员的策略进行缓存。</p>
-<h1 id="缓存如何工作"><a href="#缓存如何工作" class="headerlink" title="缓存如何工作"></a>缓存如何工作</h1><p>所有的缓存都用一套规则来帮助他们决定什么时候使用缓存中的副本提供服务（假设有副本可用的情况下）；一些规则在协议中有定义（HTTP协议1.0和1.1），一些规则由缓存的管理员设置（浏览器的用户或者代理服务器的管理员）；<br>一般说来：遵循以下基本的规则（不必担心，你不必知道所有的细节，细节将随后说明）</p>
-<p>如果响应头信息：告诉缓存器不要保留缓存，缓存器就不会缓存相应内容；<br>如果请求信息是需要认证或者安全加密的，相应内容也不会被缓存；<br>如果在回应中不存在校验器（ETag或者Last-Modified头信息），缓存服务器会认为缺乏直接的更新度信息，内容将会被认为不可缓存。<br>一个缓存的副本如果含有以下信息：内容将会被认为是足够新的<br>含有完整的过期时间和寿命控制头信息，并且内容仍在保鲜期内；<br>浏览器已经使用过缓存副本，并且在一个会话中已经检查过内容的新鲜度；<br>缓存代理服务器近期内已经使用过缓存副本，并且内容的最后更新时间在上次使用期之前；<br>够新的副本将直接从缓存中送出，而不会向源服务器发送请求；<br>如果缓存的副本已经太旧了，缓存服务器将向源服务器发出请求校验请求，用于确定是否可以继续使用当前拷贝继续服务；<br>总之：新鲜度和校验是确定内容是否可用的最重要途径：</p>
-<p>如果副本足够新，从缓存中提取就立刻能用了；<br>而经缓存器校验后发现副本的原件没有变化，系统也会避免将副本内容从源服务器整个重新传输一遍。</p>
-<h1 id="如何控制（控制不）缓存"><a href="#如何控制（控制不）缓存" class="headerlink" title="如何控制（控制不）缓存"></a>如何控制（控制不）缓存</h1><p>有很多工具可以帮助设计师和网站管理员调整缓存服务器对待网站的方式，这也许需要你亲自下手对服务器的配置进行一些调整，但绝对值得；了解如何使用这些工具请参考后面的实现章节；</p>
-<p>HTML meta标签和HTTP 头信息<br>HTML的编写者会在文档的<code>&lt;HEAD&gt;</code>区域中加入描述文档的各种属性，这些META标签常常被用于标记文档不可以被缓存或者标记多长时间后过期；<br>META标签使用很简单：但是效率并不高，因为只有几种浏览器会遵循这个标记（那些真正会“读懂”HTML的浏览器），没有一种缓存代理服务器能遵循这个 规则（因为它们几乎完全不解析文档中HTML内容）；有事会在Web页面中增加：Pragma: no-cache这个META标记，如果要让页面保持刷新，这个标签其实完全没有必要。<br>如果你的网站托管在ISP机房中，并且机房可能不给你权限去控制HTTP的头信息（如：Expires和Cache-Control），大声控诉：这些机制对于你的工作来说是必须的；<br>另外一方面： HTTP头信息可以让你对浏览器和代理服务器如何处理你的副本进行更多的控制。他们在HTML代码中是看不见的，一般由Web服务器自动生成。但是，根据 你使用的服务，你可以在某种程度上进行控制。在下文中：你将看到一些有趣的HTTP头信息，和如何在你的站点上应用部署这些特性。</p>
-<p>HTTP头信息发送在HTML代码之前，只有被浏览器和一些中间缓存能看到，一个典型的HTTP 1.1协议返回的头信息看上去像这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Fri, 30 Oct 1998 13:19:41 GMT</span><br><span class="line">Server: Apache/1.3.3 (Unix)</span><br><span class="line">Cache-Control: max-age=3600, must-revalidate</span><br><span class="line">Expires: Fri, 30 Oct 1998 14:19:41 GMT</span><br><span class="line">Last-Modified: Mon, 29 Jun 1998 02:28:12 GMT</span><br><span class="line">ETag: &quot;3e86-410-3596fbbc&quot;</span><br><span class="line">Content-Length: 1040</span><br><span class="line">Content-Type: text/html</span><br></pre></td></tr></table></figure>
-
-<p>在头信息空一行后是HTML代码的输出，关于如何设置HTTP头信息请参考实现章节；</p>
-<p>Pragma HTTP头信息 (为什么它不起作用)<br>很多人认为在HTTP头信息中设置了Pragma: no-cache后会让内容无法被缓存。但事实并非如此：HTTP的规范中，响应型头信息没有任何关于Pragma属性的说明，而讨论了的是请求型头信息 Pragma属性（头信息也由浏览器发送给服务器），虽然少数集中缓存服务器会遵循这个头信息，但大部分不会。用了Pragma也不起什么作用，要用就使 用下列头信息：</p>
-<p>使用Expires（过期时间）HTTP头信息来控制保鲜期<br>Expires（过期时间） 属性是HTTP控制缓存的基本手段，这个属性告诉缓存器：相关副本在多长时间内是新鲜的。过了这个时间，缓存器就会向源服务器发送请求，检查文档是否被修改。几乎所有的缓存服务器都支持Expires（过期时间）属性；</p>
-<p>大部分Web服务器支持你用几种方式设置Expires属性；一般的：可以设计一个绝对时间间隔：基于客户最后查看副本的时间（最后访问时间）或者根据服务器上文档最后被修改的时间；</p>
-<p>Expires头信息：对于设置静态图片文件（例如导航栏和图片按钮）可缓存特别有用；因为这些图片修改很少，你可以给它们设置一个特别长的过期时间，这会使你的网站对用户变得相应非常快；他们对于控制有规律改变的网页也很有用，例如：你每天早上6点更新新闻页，你可以设置副本的过期时间也是这个时间，这样缓存 服务器就知道什么时候去取一个更新版本，而不必让用户去按浏览器的“刷新”按钮。</p>
-<p>过期时间头信息属性值只能是HTTP格式的日期时间，其他的都会被解析成当前时间“之前”，副本会过期，记住：HTTP的日期时间必须是格林威治时间（GMT），而不是本地时间。举例：</p>
-<p>Expires: Fri, 30 Oct 1998 14:19:41 GMT<br>所以使用过期时间属性一定要确认你的Web服务器时间设置正确，一个途径是通过网络时间同步协议（Network Time Protocol NTP），和你的系统管理员那里你可以了解更多细节。<br>虽然过期时间属性非常有用，但是它还是有些局限，首先：是牵扯到了日期，这样Web服务器的时间和缓存服务器的时间必须是同步的，如果有些不同步，要么是应该缓存的内容提前过期了，要么是过期结果没及时更新。<br>还有一个过期时间设置的问题也不容忽视：如果你设置的过期时间是一个固定的时间，如果你返回内容的时候又没有连带更新下次过期的时间，那么之后所有访问请求都会被发送给源Web服务器，反而增加了负载和响应时间；</p>
-<h1 id="Cache-Control（缓存控制）-HTTP头信息"><a href="#Cache-Control（缓存控制）-HTTP头信息" class="headerlink" title="Cache-Control（缓存控制） HTTP头信息"></a>Cache-Control（缓存控制） HTTP头信息</h1><p>HTTP 1.1介绍了另外一组头信息属性：Cache-Control响应头信息，让网站的发布者可以更全面的控制他们的内容，并定位过期时间的限制。<br>有用的 Cache-Control响应头信息包括：</p>
-<ul>
-<li>max-age=[秒] — 执行缓存被认为是最新的最长时间。类似于过期时间，这个参数是基于请求时间的相对时间间隔，而不是绝对过期时间，[秒]是一个数字，单位是秒：从请求时间开始到过期时间之间的秒数。</li>
-<li>s-maxage=[秒] — 类似于max-age属性，除了他应用于共享（如：代理服务器）缓存</li>
-<li>public — 标记认证内容也可以被缓存，一般来说： 经过HTTP认证才能访问的内容，输出是自动不可以缓存的；</li>
-<li>no-cache — 强制每次请求直接发送给源服务器，而不经过本地缓存版本的校验。这对于需要确认认证应用很有用（可以和public结合使用），或者严格要求使用最新数据的应用（不惜牺牲使用缓存的所有好处）；</li>
-<li>no-store — 强制缓存在任何情况下都不要保留任何副本</li>
-<li>must-revalidate — 告诉缓存必须遵循所有你给予副本的新鲜度的，HTTP允许缓存在某些特定情况下返回过期数据，指定了这个属性，你告诉缓存，你希望严格的遵循你的规则。</li>
-<li>proxy-revalidate — 和 must-revalidate类似，除了他只对缓存代理服务器起作用</li>
-</ul>
-<p>举例:</p>
-<pre><code>Cache-Control: max-age=3600, must-revalidate</code></pre><p>如果你计划试用Cache-Control属性，你应该看一下这篇HTTP文档，详见参考和深入阅读；</p>
-<h1 id="校验参数和校验"><a href="#校验参数和校验" class="headerlink" title="校验参数和校验"></a>校验参数和校验</h1><p>在Web缓存如何工作： 我们说过：校验是当副本已经修改后，服务器和缓存之间的通讯机制；使用这个机制：缓存服务器可以避免副本实际上仍然足够新的情况下重复下载整个原件。<br>校验参数非常重要，如果1个不存在，并且没有任何信息说明保鲜期（Expires或Cache-Control）的情况下，缓存将不会存储任何副本；<br>最常见的校验参数是文档的最后修改时间，通过最后Last-Modified头信息可以，当一份缓存包含Last-Modified信息，他基于此信息，通过添加一个If-Modified-Since请求参数，向服务器查询：这个副本从上次查看后是否被修改了。<br>HTTP 1.1介绍了另外一个校验参数： ETag，服务器是服务器生成的唯一标识符ETag，每次副本的标签都会变化。由于服务器控制了ETag如何生成，缓存服务器可以通过If-None-Match请求的返回没变则当前副本和原件完全一致。<br>所有的缓存服务器都使用Last-Modified时间来确定副本是否够新，而ETag校验正变得越来越流行；<br>所有新一代的Web服务器都对静态内容（如：文件）自动生成ETag和Last-Modified头信息，而你不必做任何设置。但是，服务器对于动态内容（例如：CGI,ASP或数据库生成的网站）并不知道如何生成这些信息，参考一下编写利于缓存的脚本章节；</p>
-<h1 id="创建利于缓存网站的窍门"><a href="#创建利于缓存网站的窍门" class="headerlink" title="创建利于缓存网站的窍门"></a>创建利于缓存网站的窍门</h1><p>除了使用新鲜度信息和校验，你还有很多方法使你的网站缓存友好。</p>
-<p>保持URL稳定： 这是缓存的金科玉律，如果你给在不同的页面上，给不同用户或者从不同的站点上提供相同的内容，应该使用相同的URL，这是使你的网站缓存友好最简单，也是 最高效的方法。例如：如果你在页面上使用 “/index.html” 做为引用，那么就一直用这个地址；<br>使用一个共用的库存放每页都引用的图片和其他页面元素；<br>对于不经常改变的图片/页面启用缓存，并使用Cache-Control: max-age属性设置一个较长的过期时间；<br>对于定期更新的内容设置一个缓存服务器可识别的max-age属性或过期时间；<br>如果数据源（特别是下载文件）变更，修改名称，这样：你可以让其很长时间不过期，并且保证服务的是正确的版本；而链接到下载文件的页面是一个需要设置较短过期时间的页面。<br>万不得已不要改变文件，否则你会提供一个非常新的Last-Modified日期；例如：当你更新了网站，不要复制整个网站的所有文件，只上传你修改的文件。<br>只在必要的时候使用Cookie，cookie是非常难被缓存的，而且在大多数情况下是不必要的，如果使用cookie，控制在动态网页上；<br>减少试用SSL，加密的页面不会被任何共享缓存服务器缓存，只在必要的时候使用，并且在SSL页面上减少图片的使用；<br>使用可缓存性评估引擎，这对于你实践本文的很多概念都很有帮助；<br>编写利于缓存的脚本<br>脚本缺省不会返回校验参数（返回Last-Modified或ETag头信息）或其他新鲜度信息（Expires或Cache-Control），有些动态脚本的确是动态内容（每次相应内容都不一样），但是更多（搜索引擎，数据库引擎网站）网站还是能从缓存友好中获益的。<br>一般说来，如果脚本生成的输出在未来一段时间（几分钟或者几天）都是可重复复制的，那么就是可缓存的。如果脚本输出内容只随URL变化而变化，也是可缓存的；但如果输出会根据cookie，认证信息或者其他外部条件变化，则还是不可缓存的。<br>最利于缓存的脚本就是将内容改变时导出成静态文件，Web服务器可以将其当作另外一个网页并生成和试用校验参数，让一些都变得更简单，只需要写入文件即可，这样最后修改时间也有了；<br>另外一个让脚本可缓存的方法是对一段时间内能保持较新的内容设置一个相对寿命的头信息，虽然通过Expires头信息也可以实现，但更容易的是用Cache-Control: max-age属性，它会让首次请求后一段时间内缓存保持新鲜；<br>如果以上做法你都做不到，你可以让脚本生成一个校验属性，并对 If-Modified-Since 和/或If-None-Match请求作出反应，这些属性可以从解析HTTP头信息得到，并对符合条件的内容返回304 Not Modified（内容未改变），可惜的是，这种做法比不上前2种高效；<br>其他窍门：</p>
-<p>尽量避免使用POST，除非万不得已，POST模式的返回内容不会被大部分缓存服务器保存，如果你发送内容通过URL和查询（通过GET模式）的内容可以缓存下来供以后使用；<br>不要在URL中加入针对每个用户的识别信息：除非内容是针对每个用户不同的；<br>不要统计一个用户来自一个地址的所有请求，因为缓存常常是一起工作的；<br>生成并返回Content-Length头信息，如果方便的话，这个属性让你的脚本在可持续链接模式时：客户端可以通过一个TCP/IP链接同时请求多个副本，而不是为每次请求单独建立链接，这样你的网站相应会快很多；</p>
-<p>具体定义请参考实现章节。</p>
-<h1 id="常见问题解答"><a href="#常见问题解答" class="headerlink" title="常见问题解答"></a>常见问题解答</h1><p>让网站变得可缓存的要点是什么？<br>好的策略是确定那些内容最热门，大量的复制（特别是图片）并针对这些内容先部署缓存。<br>如何让页面通过缓存达到最快相应？<br>缓存最好的副本是那些可以长时间保持新鲜的内容；基于校验虽然有助于加快相应，但是它不得不和源服务器联系一次去检查内容是否够新，如果缓存服务器上就知道内容是新的，内容就可以直接相应返回了。</p>
-<p>我理解缓存是好的，但是我不得不统计多少人访问了我的网站！<br>如果你必须知道每次页面访问的，选择【一】个页面上的小元素，或者页面本身，通过适当的头信息让其不可缓存，例如： 可以在每个页面上部署一个1x1像素的透明图片。Referer头信息会有包含这个图片的每个页面信息；<br>明确一点：这个并不会给你一个关于你用户精确度很高的统计，而且这对互联网和你的用户这都不太好，消耗了额外的带宽，强迫用户去访问无法缓存的内容。了解更多信息，参考访问统计资料。<br>我如何能看到HTTP头信息的内容？<br>很多浏览器在页面属性或类似界面中可以让你看到Expires 和Last-Modified信息；如果有的话：你会找到页面信息的菜单和页面相关的文件（如图片），并且包含他们的详细信息；<br>看到完整的头信息，你可以用telnet手工连接到Web服务器；<br>为此：你可能需要用一个字段指定端口（缺省是80），或者链接到<a href="http://www.example.com:80" target="_blank" rel="noopener">www.example.com:80</a> 或者 <a href="http://www.example.com" target="_blank" rel="noopener">www.example.com</a> 80(注意是空格)，更多设置请参考一下telnet客户端的文档；<br>打开网站链接：请求一个查看链接，如果你想看到<a href="http://www.example.com/foo.html" target="_blank" rel="noopener">http://www.example.com/foo.html</a> 连接到<a href="http://www.example.com的80端口后，键入：" target="_blank" rel="noopener">www.example.com的80端口后，键入：</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET /foo.html HTTP/1.1 [回车]</span><br><span class="line">GET /foo.html HTTP/1.1 [return]</span><br><span class="line">Host: www.example.com [回车][回车]</span><br><span class="line">Host: www.example.com [return][return]</span><br></pre></td></tr></table></figure>
-
-<p>在[回车]处按键盘的回车键；在最后，要按2次回车，然后，就会输出头信息及完整页面，如果只想看头信息，将GET换成HEAD。</p>
-<h1 id="我的页面是密码保护的，代理缓存服务器如何处理他们？"><a href="#我的页面是密码保护的，代理缓存服务器如何处理他们？" class="headerlink" title="我的页面是密码保护的，代理缓存服务器如何处理他们？"></a>我的页面是密码保护的，代理缓存服务器如何处理他们？</h1><p>缺省的，网页被HTTP认证保护的都是私密内容，它们不会被任何共享缓存保留。但是，你可以通过设置Cache-Control: public让认证页面可缓存，HTTP 1.1标准兼容的缓存服务器会认出它们可缓存。<br>如果你认为这些可缓存的页面，但是需要每个用户认证后才能看，可以组合使用Cache-Control: public和no-cache头信息，高速缓存必须在提供副本之前，将将新客户的认证信息提交给源服务器。设置就是这样：</p>
-<pre><code>Cache-Control: public, no-cache</code></pre><p>无论如何：这是减少认证请求的最好方法，例如： 你的图片是不机密的，将它们部署在另外一个目录，并对此配置服务器不强制认证。这样，那些图片会缺省都缓存。</p>
-<p>我们是否要担心用户通过cache访问我的站点？<br>代理服务器上SSL页面不会被缓存（不推荐被缓存），所以你不必为此担心。但是，由于缓存保存了非SSL请求和从他们抓取的URL，你要意识到没有安全保护的网站，可能被不道德的管理员可能搜集用户隐私，特别是通过URL。<br>实际上，位于服务器和客户端之间的管理员可以搜集这类信息。特别是通过CGI脚本在通过URL传递用户名和密码的时候会有很大问题；这对泄露用户名和密码是一个很大的漏洞；<br>如果你初步懂得互联网的安全机制，你不会对缓存服务器有任何。</p>
-<p>我在寻找一个包含在Web发布系统解决方案，那些是比较有缓存意识的系统？<br>这很难说，一般说来系统越复杂越难缓存。最差就是全动态发布并不提供校验参数；你无发缓存任何内容。可以向系统提供商的技术人员了解一下，并参考后面的实现说明。</p>
-<p>我的图片设置了1个月后过期，但是我现在需要现在更新。<br>过期时间是绕不过去的，除非缓存（浏览器或者代理服务器）空间不足才会删除副本，缓存副本在过期之间会被一直使用。<br>最好的办法是改变它们的链接，这样，新的副本将会从源服务器上重新下载。记住：引用它们的页面本身也会被缓存。因此，使用静态图片和类似内容是很容易缓存的，而引用他们的HTML页面则要保持非常更新；<br>如果你希望对指定的缓存服务器重新载入一个副本，你可以强制使用“刷新”（在FireFox中在reload的时候按住shift键：就会有前面提到恶Pragma: no-cache头信息发出）。或者你可以让缓存的管理员从他们的界面中删除相应内容；<br>我运行一个Web托管服务，如何让我的用户发布缓存友好的网页？<br>如果你使用apahe，可以考虑允许他们使用.htaccess文件并提供相应的文档；<br>另外一方面： 你也可以考虑在各种虚拟主机上建立各种缓存策略。例如： 你可以设置一个目录 /cache-1m 专门用于存放访问1个月的访问，另外一个 /no-cache目录则被用提供不可存储副本的服务。<br>无论如何：对于大量用户访问还是应该用缓存。对于大网站，这方面的节约很明显（带宽和服务器负载）；</p>
-<p>我标记了一些网页是可缓存的，但是浏览器仍然每次发送请求给服务。如何强制他们保存副本？<br>缓存服务器并不会总保存副本并重用副本；他们只是在特定情况下会不保存并使用副本。所有的缓存服务器都回基于文件的大小，类型（例如：图片 页面），或者服务器空间的剩余来确定如何缓存。你的页面相比更热门或者更大的文件相比，并不值得缓存。<br>所以有些缓存服务器允许管理员根据文件类型确定缓存副本的优先级，允许某些副本被永久缓存并长期有效；</p>
-<p>缓存机制的实现 - Web服务器端配置<br>一般说来，应该选择最新版本的Web服务器程序来部署。不仅因为它们包含更多利于缓存的功能，新版本往往在性能和安全性方面都有很多的改善。</p>
-<p>Apache HTTP服务器<br>Apache有些可选的模块来包含这些头信息： 包括Expires和Cache-Control。 这些模块在1.2版本以上都支持；<br>这些模块需要和apache一起编译；虽然他们已经包含在发布版本中，但缺省并没有启用。为了确定相应模块已经被启用：找到httpd程序并运行httpd -l 它会列出可用的模块，我们需要用的模块是mod_expires和mod_headers</p>
-<p>如果这些模块不可用，你需要联系管理员，重新编译并包含这些模块。这些模块有时候通过配置文件中把注释掉的配置启用，或者在编译的时候增加-enable -module=expires和-enable-module=headers选项（在apache 1.3和以上版本）。 参考Apache发布版中的INSTALL文件；<br>Apache一旦启用了相应的模块，你就可以在.htaccess文件或者在服务器的access.conf文件中通过mod_expires设置副本什 么时候过期。你可设置过期从访问时间或文件修改时间开始计算，并且应用到某种文件类型上或缺省设置，参考模块的文档获得更多信息，或者遇到问题的时候向你身边的apache专家讨教。<br>应用Cache-Control头信息，你需要使用mod_headers,它将允许你设置任意的HTTP头信息，参考mod_headers的文档可以获得更多资料；<br>这里有个例子说明如何使用头信息：</p>
-<p>.htaccess文件允许web发布者使用命令只在配置文件中用到的命令。他影响到所在目录及其子目录；问一下你的服务器管理员确认这个功能是否启用了。</p>
-<h3 id="启用-mod-expires"><a href="#启用-mod-expires" class="headerlink" title="启用 mod_expires"></a>启用 mod_expires</h3><p>ExpiresActive On</p>
-<h3 id="设置-gif-在被访问过后1个月过期。"><a href="#设置-gif-在被访问过后1个月过期。" class="headerlink" title="设置 .gif 在被访问过后1个月过期。"></a>设置 .gif 在被访问过后1个月过期。</h3><p>ExpiresByType image/gif A2592000</p>
-<h3 id="其他文件设置为最后修改时间1天后过期"><a href="#其他文件设置为最后修改时间1天后过期" class="headerlink" title="其他文件设置为最后修改时间1天后过期"></a>其他文件设置为最后修改时间1天后过期</h3><h3 id="用了另外的语法"><a href="#用了另外的语法" class="headerlink" title="(用了另外的语法)"></a>(用了另外的语法)</h3><p>ExpiresDefault “modification plus 1 day”</p>
-<h3 id="在index-html文件应用-Cache-Control头属性"><a href="#在index-html文件应用-Cache-Control头属性" class="headerlink" title="在index.html文件应用 Cache-Control头属性"></a>在index.html文件应用 Cache-Control头属性</h3><files index.html>
-Header append Cache-Control "public, must-revalidate"
-</files>       
-注意： 在适当情况下mod_expires会自动计算并插入Cache-Control:max-age 头信息
-Apache 2.0的配置和1.3类似，更多信息可以参考2.0的mod_expires和mod_headers文档；
-
-
-<h2 id="Microsoft-IIS服务器"><a href="#Microsoft-IIS服务器" class="headerlink" title="Microsoft IIS服务器"></a>Microsoft IIS服务器</h2><p>Microsoft的IIS可以非常容易的设置头信息，注意：这只针对IIS 4.0服务器，并且只能在NT服务器上运行。<br>为网站的一个区域设置头信息，先要到管理员工具界面中，然后设置属性。选择HTTP Header选单，你会看到2个有趣的区域：启用内容过期和定制HTTP头信息。头一个设置会自动配置，第二个可以用于设置Cache-Control头信息；<br>设置asp页面的头信息可以参考后面的ASP章节，也可以通过ISAPI模块设置头信息，细节请参考MSDN。</p>
-<h2 id="Netscape-iPlanet企业服务器"><a href="#Netscape-iPlanet企业服务器" class="headerlink" title="Netscape/iPlanet企业服务器"></a>Netscape/iPlanet企业服务器</h2><p>3.6版本以后，Netscape/iPlanet已经不能设置Expires头信息了，他从3.0版本开始支持HTTP 1.1的功能。这意味着HTTP 1.1的缓存（代理服务器/浏览器）优势都可以通过你对Cache-Control设置来获得。<br>使用Cache-Control头信息，在管理服务器上选择内容管理|缓存设置目录。然后：使用资源选择器，选择你希望设置头信息的目录。设置完头信息后，点击“OK”。更多信息请参考Netscape/iPlanet企业服务器的手册。</p>
-<h1 id="缓存机制的实现：服务器端脚本"><a href="#缓存机制的实现：服务器端脚本" class="headerlink" title="缓存机制的实现：服务器端脚本"></a>缓存机制的实现：服务器端脚本</h1><p>需要注意的一点是：也许服务器设置HTTP头信息比脚本语言更容易，但是两者你都应该使用。<br>因为服务器端的脚本主要是为了动态内容，他本身不产生可缓存的文件页面，即使内容实际是可以缓存的。如果你的内容经常改变，但是不是每次页面请求都改变， 考虑设置一个Cache-Control: max-age头信息；大部分用户会在短时间内多次访问同一页面。例如： 用户点击“后退”按钮，即使没有新内容，他们仍然要再次从服务器下载内容查看。</p>
-<h2 id="CGI程序"><a href="#CGI程序" class="headerlink" title="CGI程序"></a>CGI程序</h2><p>CGI脚本是生成内容最流行的方式之一，你可以很容易在发送内容之前的扩展HTTP头信息；大部分CGI实现都需要你写 Content-Type头信息，例如这个Perl脚本：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/usr/bin/perl</span><br><span class="line">print "Content-type: text/html\n";</span><br><span class="line">print "Expires: Thu, 29 Oct 1998 17:04:19 GMT\n";</span><br><span class="line">print "\n";</span><br><span class="line"><span class="meta">#</span>## 后面是内容体...</span><br></pre></td></tr></table></figure>
-
-<p>由于都是文本，你可以很容易通过内置函数生成Expires和其他日期相关的头信息。如果你使用<code>Cache-Control: max-age;</code>会更简单；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print &quot;Cache-Control: max-age=600\n&quot;;</span><br></pre></td></tr></table></figure>
-
-<p>这样脚本可以在被请求后缓存10分钟；这样用户如果按“后退”按钮，他们不会重新提交请求；<br>CGI的规范同时也允许客户端发送头信息，每个头信息都有一个<code>‘HTTP_’</code>的前缀；这样如果一个客户端发送一个If-Modified-Since请求，就是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HTTP_IF_MODIFIED_SINCE = Fri, 30 Oct 1998 14:19:41 GMT</span><br></pre></td></tr></table></figure>
-
-<p>参考一下<code>cgi_buffer</code>库，一个自动处理ETag的生成和校验的库，生成Content-Length属性和对内容进行gzip压缩。在Python脚本中也只需加入一行；</p>
-<h2 id="服务器端包含-Server-Side-Includes"><a href="#服务器端包含-Server-Side-Includes" class="headerlink" title="服务器端包含 Server Side Includes"></a>服务器端包含 Server Side Includes</h2><p>SSI（经常使用.shtml扩展名）是网站发布者最早可以生成动态内容的方案。通过在页面中设置特别的标记，也成为一种嵌入HTML的脚本；<br>大部分SSI的实现无法设置校验器，于是无法缓存。但是Apache可以通过对特定文件的组执行权限设置实现允许用户设置那种SSI可以被缓存；结合XbitHack调整整个目录。更多文档请参考mod_include文档。</p>
-<h2 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h2><p>PHP是一个内建在web服务器中的服务器端脚本语言，当做为HTML嵌入式脚本，很像SSI，但是有更多的选项，PHP可以在各种Web服务器上设置为CGI模式运行，或者做为Apache的模块；<br>缺省PHP生成副本没有设置校验器，于是也无法缓存，但是开发者可以通过Header()函数来生成HTTP的头信息；<br>例如：以下代码会生成一个Cache-Control头信息，并设置为3天以后过期的Expires头信息；</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> Header(<span class="string">"Cache-Control: must-revalidate"</span>);</span><br><span class="line"></span><br><span class="line"> $offset = <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">3</span>;</span><br><span class="line"> $ExpStr = <span class="string">"Expires: "</span> . gmdate(<span class="string">"D, d M Y H:i:s"</span>, time() + $offset) . <span class="string">" GMT"</span>;</span><br><span class="line"> Header($ExpStr);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>记住： Header()的输出必须先于所有其他HTML的输出；<br>正如你看到的：你可以手工创建HTTP日期；PHP没有为你提供专门的函数（新版本已经让这个越来越容易了，请参考PHP的日期相关函数文档），当然，最简单的还是设置Cache-Control: max-age头信息，而且对于大部分情况都比较适用；<br>更多信息，请参考header相关的文档；<br>也请参考一下<code>cgi_buffer</code>库，自动处理ETag的生成和校验，Content-Length生成和内容的gzip压缩，PHP脚本只需包含1行代码；</p>
-<h2 id="Cold-Fusion"><a href="#Cold-Fusion" class="headerlink" title="Cold Fusion"></a>Cold Fusion</h2><p>Cold Fusion是Macromedia的商业服务器端脚本引擎，并且支持多种Windows平台，Linux平台和多种Unix平台。Cold Fusion通过CFHEADER标记设置HTTP头信息相对容易。可惜的是：以下的Expires头信息的设置有些容易误导；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;CFHEADER NAME=&quot;Expires&quot; VALUE=&quot;#Now()#&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-<p>它并不像你想像的那样工作，因为时间（本例中为请求发起的时间）并不会被转换成一个符合HTTP时间，而且打印出副本的Cold fusion的日期/时间对象，大部分客户端会忽略或者将其转换成1970年1月1日。<br>但是：Cold Fusion另外提供了一套日期格式化函数， GetHttpTimeSTring. 结合DateAdd函数，就很容易设置过期时间了，这里我们设置一个Header声明副本在1个月以后过期；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;cfheader name=&quot;Expires&quot; value=&quot;#GetHttpTimeString(DateAdd(&apos;m&apos;, 1, Now()))#&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-<p>你也可以使用CFHEADER标签来设置Cache-Control: max-age等其他头信息；<br>记住：Web服务器也会将头信息设置转给Cold Fusion(做为CGI运行的时候)，检查你的服务器设置并确定你是否可以利用服务器设置代替Cold Fusion。</p>
-<h2 id="ASP和ASP-NET"><a href="#ASP和ASP-NET" class="headerlink" title="ASP和ASP.NET"></a>ASP和ASP.NET</h2><p>在asp中设置HTTP头信息是：确认Response方法先于HTML内容输出前被调用，或者使用 Response.Buffer暂存输出；同样的：注意某些版本的IIS缺省设置会输出Cache-Control: private 头信息，必须声明成public才能被共享缓存服务器缓存。<br>IIS的ASP和其他web服务器都允许你设置HTTP头信息，例如： 设置过期时间，你可以设置Response对象的属性；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% Response.Expires=1440 %&gt;</span><br></pre></td></tr></table></figure>
-
-<p>设置请求的副本在输出的指定分钟后过期，类似的：也可以设置绝对的过期时间（确认你的HTTP日期格式正确）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% Response.ExpiresAbsolute=#May 31,1996 13:30:15 GMT# %&gt;</span><br></pre></td></tr></table></figure>
-
-<p>Cache-Control头信息可以这样设置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% Response.CacheControl=&quot;public&quot; %&gt;</span><br></pre></td></tr></table></figure>
-
-<p>在ASP.NET中，Response.Expires 已经不推荐使用了，正确的方法是通过Response.Cache设置Cache相关的头信息；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Response.Cache.SetExpires ( DateTime.Now.AddMinutes ( 60 ) ) ;</span><br><span class="line">Response.Cache.SetCacheability ( HttpCacheability.Public ) ;</span><br></pre></td></tr></table></figure>
-
-<p>参考MSDN文档可以找到更多相关新年系；</p>
-<h1 id="参考文档和深入阅读"><a href="#参考文档和深入阅读" class="headerlink" title="参考文档和深入阅读"></a>参考文档和深入阅读</h1><p>HTTP 1.1 规范定义<br>HTTP 1.1的规范有大量的扩展用于页面缓存，以及权威的接口实现指南，参考章节：13, 14.9, 14.21, 以及 14.25.</p>
-<p>Web-Caching.com<br>非常精彩的介绍缓存相关概念，并介绍其他在线资源。</p>
-<p>关于非连续性访问统计<br>Jeff Goldberg内容丰富的演说告诉你为什么不应该过度依赖访问统计和计数器；</p>
-<p>可缓存性检测引擎<br>可缓存的引擎设计，检测网页并确定其如何与Web缓存服务器交互， 这个引擎配合这篇指南是一个很好的调试工具，</p>
-<p><code>cgi_buffer</code>库<br>包含库：用于CGI模式运行的Perl/Python/PHP脚本，自动处理ETag生成/校验，Content-Length生成和内容压缩。正确地。 Python版本也被用作其他大量的CGI脚本。</p>
-<h1 id="关于本文档"><a href="#关于本文档" class="headerlink" title="关于本文档"></a>关于本文档</h1><p>本文版权属于Mark Nottingham <a href="mailto:&#x6d;&#x6e;&#x6f;&#x74;&#64;&#x70;&#111;&#98;&#x6f;&#120;&#x2e;&#99;&#x6f;&#109;" target="_blank" rel="noopener">&#x6d;&#x6e;&#x6f;&#x74;&#64;&#x70;&#111;&#98;&#x6f;&#120;&#x2e;&#99;&#x6f;&#109;</a>，本作品遵循创作共用版权。<br>如果你镜像本文，请通过以上邮件告知，这样你可以在更新时被通知；<br>所有的商标属于其所有人。<br>虽然作者确信内容在发布时的正确性，但不保证其应用或引申应用的正确性，如有误传，错误或其他需要澄清的问题请尽快告知作者；<br>本文最新版本可以从 <a href="http://www.mnot.net/cache_docs/" target="_blank" rel="noopener">http://www.mnot.net/cache_docs/</a> 获得；<br>翻译版本包括： 捷克语版，法语版和中文版。<br>版本： 1.81 - 2007年3月16日</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">http cache</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/23/http-cache-control/">展开全文 >></a>
         </p>
       
 
