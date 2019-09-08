@@ -712,7 +712,9 @@ white-space: pre;
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="Hadoop-大数据解决方案"><a href="#Hadoop-大数据解决方案" class="headerlink" title="Hadoop - 大数据解决方案"></a>Hadoop - 大数据解决方案</h1><h1 id="传统方法"><a href="#传统方法" class="headerlink" title="传统方法"></a>传统方法</h1><p>在这种方法中，企业将拥有一台计算机来存储和处理大数据。出于存储目的，程序员将借助他们选择的数据库供应商（如Oracle，IBM等）。在这种方法中，用户与应用程序交互，而应用程序又处理数据存储和分析的部分。</p>
-<h1 id="大数据传统方法"><a href="#大数据传统方法" class="headerlink" title="大数据传统方法"></a>大数据传统方法</h1><p>局限性<br>这种方法适用于那些处理标准数据库服务器可以容纳的大量数据的应用程序，或者处理数据的处理器的限制。但是，当涉及处理大量可扩展数据时，通过单个数据库瓶颈处理此类数据是一项繁忙的任务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@startuml</span><br><span class="line">digraph tradition&#123;</span><br><span class="line">用户 -&gt; 中心系统[shape=&quot;box3d&quot;]</span><br><span class="line">中心系统 -&gt; 关系型数据库[shape=&quot;cylinder&quot;]</span><br><span class="line"> </span><br><span class="line">&#125;</span><br><span class="line">@enduml</span><br></pre></td></tr></table></figure>
+
+<h1 id="大数据传统方法"><a href="#大数据传统方法" class="headerlink" title="大数据传统方法"></a>大数据传统方法</h1><h2 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h2><p>这种方法适用于那些处理标准数据库服务器可以容纳的大量数据的应用程序，或者处理数据的处理器的限制。但是，当涉及处理大量可扩展数据时，通过单个数据库瓶颈处理此类数据是一项繁忙的任务。</p>
 <p>谷歌的解决方案<br>Google使用名为MapReduce的算法解决了这个问题。该算法将任务分成小部分并将它们分配给许多计算机，并从中收集结果，这些结果在集成时形成结果数据集。</p>
 <p>谷歌MapReduce<br>Hadoop的<br>使用谷歌提供的解决方案，Doug Cutting和他的团队开发了一个名为HADOOP的开源项目。</p>
 <p>Hadoop使用MapReduce算法运行应用程序，其中数据与其他算法并行处理。简而言之，Hadoop用于开发可以对大量数据执行完整统计分析的应用程序。</p>
