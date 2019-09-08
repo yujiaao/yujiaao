@@ -128,7 +128,7 @@
     <link href="http://s.bixuebihui.cn/2019/09/06/Hadoop-%E5%85%A5%E9%97%A8/"/>
     <id>http://s.bixuebihui.cn/2019/09/06/Hadoop-入门/</id>
     <published>2019-09-06T14:05:55.000Z</published>
-    <updated>2019-09-06T14:50:32.678Z</updated>
+    <updated>2019-09-08T07:07:14.914Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Hadoop教程"><a href="#Hadoop教程" class="headerlink" title="Hadoop教程"></a>Hadoop教程</h1><p>Hadoop是一个开源框架，允许使用简单的编程模型在分布式环境中跨计算机集群存储和处理大数据。它旨在从单个服务器扩展到数千台计算机，每台计算机都提供本地计算和存储。</p><p>本教程简要介绍了大数据，MapReduce算法和Hadoop分布式文件系统。</p><h2 id="听众"><a href="#听众" class="headerlink" title="听众"></a>听众</h2><p>本教程是为有志于使用Hadoop Framework学习大数据分析基础知识并成为Hadoop开发人员的专业人士准备的。软件专业人员，分析专业人员和ETL开发人员是本课程的主要受益者。</p><h2 id="先决条件"><a href="#先决条件" class="headerlink" title="先决条件"></a>先决条件</h2><p>在开始学习本教程之前，我们假设您事先已经了解过Core Java，数据库概念以及任何Linux操作系统风格。</p>]]></content>
     
