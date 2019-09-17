@@ -205,6 +205,215 @@ white-space: pre;
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-MySQL-8-0-remove-query-cache" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/27/MySQL-8-0-remove-query-cache/">MySQL 8.0 remove query cache</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/27/MySQL-8-0-remove-query-cache/" class="archive-article-date">
+  	<time datetime="2019-08-27T00:54:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>MySQL 8.0：停用对查询缓存的支持<br>2017年5月30 日MySQL Matt Lord<br>正如Rene昨天在ProxySQL博客上写道：</p>
+<blockquote>
+<p>尽管MySQL Query Cache旨在提高性能，但它存在严重的可伸缩性问题，并且很容易成为严重的瓶颈。</p>
+</blockquote>
+<p>这确实是我们在MySQL团队中观察到的一段时间。在我们讨论今天发表的主题之前，让我先介绍一下。</p>
+<h1 id="查询缓存简介"><a href="#查询缓存简介" class="headerlink" title="查询缓存简介"></a>查询缓存简介</h1><p>MySQL 查询缓存是查询结果缓存。它将以<code>SEL</code>开头的传入查询与哈希表进行比较，如果匹配则返回先前执行查询的结果。有一些限制：</p>
+<ul>
+<li>查询必须逐字节匹配（查询缓存避免解析）</li>
+<li>使用非确定性功能将导致查询未被缓存（包括临时表，用户变量，RAND（），NOW（）和UDF。）</li>
+<li>查询缓存旨在不提供过时的结果。对基础表的任何修改都会导致所有缓存对这些表无效。</li>
+<li>如果缓存可用于InnoDB，则存在一些限制（尊重MVCC;因为您打开了事务，’缓存’可能不代表预期视图中的数据。）</li>
+</ul>
+<h1 id="最佳案例情景"><a href="#最佳案例情景" class="headerlink" title="最佳案例情景"></a>最佳案例情景</h1><p>正如我几年前在我的个人博客上写的那样：</p>
+<blockquote>
+<p>查询缓存的理想情况往往是大部分是只读的，其中有许多非常昂贵的查询只检查数百万行以返回一些。假设示例可能是一个复杂的查询，用于为始终显示在网页表单上的下拉列表构建值列表。在这种情况下，查询缓存可以掩盖由丢失索引引起的性能问题，这使得它对新手用户很有帮助。</p>
+</blockquote>
+<p>今天这个评论仍然是正确的，但我认为重要的是还要指出用于不良应用干预的DBA工具也有所改进：</p>
+<p>在MySQL服务器中，我们现在能够重写查询以插入提示（或其他修改以提高性能）<br>我们有像 ProxySQL 这样的第三方工具，可以充当中间人查询缓存。ProxySQL 还支持缓存的TTL，它在我之前提供的示例中工作正常（为下拉列表构建值列表）。</p>
+<h1 id="查询缓存的局限性"><a href="#查询缓存的局限性" class="headerlink" title="查询缓存的局限性"></a>查询缓存的局限性</h1><p>自MySQL 5.6（2013）以来，默认情况下已禁用查询缓存，因为众所周知，它不能与多核计算机上的高吞吐量工作负载进行扩展。Rene昨天在他的帖子中证实了这一点，但<a href="https://www.flamingspork.com/blog/2014/06/05/performance-impact-of-mysql-query-cache-on-modern-hardware/" target="_blank" rel="noopener">Stewart Smith</a>，  <a href="https://dom.as/tech/query-cache-tuner/" target="_blank" rel="noopener">Domas Mituzas</a>  （更新：和Kristian Koehntopp）之前也曾提到过这一点。</p>
+<p>假设可以提高可伸缩性，查询缓存的限制因素是，因为只有访问缓存的查询才会看到改进; 它不太可能提高绩效的可预测性。  对于面向用户的系统，降低性能的可变性通常比提高峰值吞吐量更重要：</p>
+<p><img src="Predictability-SIGMOD2017-768x576.jpg" alt="从自顶向下的方法中滑动2/47 以实现数据库系统中的性能可预测性。"></p>
+<p><img src="Predictability-SIGMOD2017-2-768x576.jpg" alt="从自上而下的方法中滑动3/47 以实现数据库系统中的性能可预测性。"></p>
+<h1 id="决定删除对查询缓存的支持"><a href="#决定删除对查询缓存的支持" class="headerlink" title="决定删除对查询缓存的支持"></a>决定删除对查询缓存的支持</h1><p>我们同意密歇根大学安娜堡分校的Jiamin Huang，Barzan Mozafari，Grant Schoenebeck，Thomas F. Wenisch所做的<a href="http://web.eecs.umich.edu/~mozafari/php/data/uploads/Predictability-SIGMOD2017.pdf" target="_blank" rel="noopener">研究</a>。我们考虑了我们可以对查询缓存进行哪些改进，以及我们可以进行的优化，这些优化可以改善所有工作负载。</p>
+<p>虽然这些选择本身是正交的，但工程资源是有限的。也就是说，我们正在转变战略，投资于更普遍适用于所有工作负载的改进。</p>
+<p>我们也同意Rene的<a href="http://proxysql.com/blog/scaling-with-proxysql-query-cache" target="_blank" rel="noopener">结论</a>，即当它靠近客户端时，缓存提供了最大的好处：</p>
+<p><img src="QC2.png" alt="proxysql"></p>
+<p>“Client + 2x ProxySQL”结果显示，在将缓存移动到客户端时，性能提高了5.2倍。</p>
+<h1 id="现有用户的升级路径"><a href="#现有用户的升级路径" class="headerlink" title="现有用户的升级路径"></a>现有用户的升级路径</h1><p>根据当前的限制，MySQL 5.7的生命周期将继续支持查询缓存。MySQL 8.0不支持查询缓存，并且鼓励用户升级使用服务器端Query Rewrite或ProxySQL作为中间人缓存。</p>
+<p>我们希望此更改只会影响少数用户，但如果您对此感兴趣，请与我们联系并取消联系！</p>
+<p>感谢您使用MySQL！</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">mysql cache</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/27/MySQL-8-0-remove-query-cache/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-JavaScript-function-vs-Function" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/23/JavaScript-function-vs-Function/">JavaScript function vs Function</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/23/JavaScript-function-vs-Function/" class="archive-article-date">
+  	<time datetime="2019-08-23T10:52:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>function, new function, new Function之间的区别</p>
+<p>函数是JavaScript中很重要的一个语言元素，并且提供了一个function关键字和内置对象Function，下面是其可能的用法和它们之间的关系。</p>
+<h1 id="使用方法一"><a href="#使用方法一" class="headerlink" title="使用方法一"></a>使用方法一</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo01 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) //<span class="title">or</span> <span class="title">fun01</span> = <span class="title">function</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    <span class="keyword">var</span> temp = <span class="number">100</span>; </span><br><span class="line">    <span class="keyword">this</span>.temp = <span class="number">200</span>; </span><br><span class="line">    <span class="keyword">return</span> temp + <span class="keyword">this</span>.temp; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">alert(<span class="keyword">typeof</span>(foo01)); </span><br><span class="line">alert(foo01());</span><br></pre></td></tr></table></figure>
+
+<p> 运行结果：</p>
+<blockquote>
+<p>function<br> 300    </p>
+</blockquote>
+<p>最普通的function使用方式，定一个JavaScript函数。两种写法表现出来的运行效果完全相同，唯一的却别是后一种写法有较高的初始化优先级。在大扩号内的变量作用域中，this指代foo01的所有者，即window对象。</p>
+<h1 id="使用方法二"><a href="#使用方法二" class="headerlink" title="使用方法二"></a>使用方法二</h1><p>代码如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo02 = <span class="keyword">new</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"> </span>&#123; </span><br><span class="line">     <span class="keyword">var</span> temp = <span class="number">100</span>; </span><br><span class="line">     <span class="keyword">this</span>.temp = <span class="number">200</span>; </span><br><span class="line">     <span class="keyword">return</span> temp + <span class="keyword">this</span>.temp; </span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> alert(<span class="keyword">typeof</span>(foo02)); </span><br><span class="line"> alert(foo02.constructor());</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：  </p>
+<blockquote>
+<p>object<br> 300    </p>
+</blockquote>
+<p>这是一个比较puzzle的function的使用方式，好像是定一个函数。但是实际上这是定一个JavaScript中的用户自定义对象，不过这里是个匿名类。这个用法和函数本身的使用基本没有任何关系，在大扩号中会构建一个变量作用域，this指代这个作用域本身。</p>
+<h1 id="使用方法三"><a href="#使用方法三" class="headerlink" title="使用方法三"></a>使用方法三</h1><p>代码如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo3 = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">'var temp = 100; this.temp = 200; return temp + this.temp;'</span>); </span><br><span class="line"></span><br><span class="line"> alert(<span class="keyword">typeof</span>(foo3)); </span><br><span class="line"> alert(foo3());</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：  </p>
+<blockquote>
+<p>function<br> 300    </p>
+</blockquote>
+<p>使用系统内置函数对象来构建一个函数，这和方法一中的第一种方式在效果和初始化优先级上都完全相同，就是函数体以字符串形式给出。</p>
+<h1 id="使用方法四"><a href="#使用方法四" class="headerlink" title="使用方法四"></a>使用方法四</h1><p>代码如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo4 = <span class="built_in">Function</span>(<span class="string">'var temp = 100; this.temp = 200; return temp + this.temp;'</span>); </span><br><span class="line"></span><br><span class="line"> alert(<span class="keyword">typeof</span>(foo4)); </span><br><span class="line"> alert(foo4());</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<blockquote>
+<p>function<br>300    </p>
+</blockquote>
+<p>这个方式是不常使用的，效果和方法三一样，这也体现了JavaScript一个最大的特性：灵活！能省就省。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JavaScript function</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/23/JavaScript-function-vs-Function/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-http-cache-control" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1403,6 +1612,10 @@ MathJax.Hub.Queue(function() {
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">javascript promise</a>
               </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">hadoop mapreduce</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
@@ -1458,6 +1671,14 @@ MathJax.Hub.Queue(function() {
           
             <li class="search-li">
               <a href="http://itcool.fun/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>搬瓦工</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="https://tableconvert.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>表格转换</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="https://m.bixuebihui.cn/html2md/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>html2md</a>
             </li>
           
         </ul>
